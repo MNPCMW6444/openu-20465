@@ -35,14 +35,14 @@ int main() {
     scanf("%lu", &n);
 
     /* Compare the specified number of characters in the strings using strncmp */
-    printf("\nComparing the first %zu characters of '%s' and '%s' using strncmp:\n", n, str1, str2);
+    printf("\nComparing the first %lu characters of '%s' and '%s' using strncmp:\n", n, str1, str2);
     int result = strncmp(str1, str2, n);
     if (result == 0) {
-        printf("The first %zu characters are equal.\n", n);
+        printf("The first %lu characters are equal.\n", n);
     } else if (result < 0) {
-        printf("The first %zu characters of '%s' are less than the first %zu characters of '%s'.\n", n, str1, n, str2);
+        printf("The first %lu characters of '%s' are less than the first %lu characters of '%s'.\n", n, str1, n, str2);
     } else {
-        printf("The first %zu characters of '%s' are greater than the first %zu characters of '%s'.\n", n, str1, n, str2);
+        printf("The first %lu characters of '%s' are greater than the first %lu characters of '%s'.\n", n, str1, n, str2);
     }
 
     /* Compare the strings using strcmp */
