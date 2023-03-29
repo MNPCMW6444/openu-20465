@@ -45,19 +45,19 @@ int main() {
     char* result_ch;
 
     /* Get user inputs for two strings and a character */
-    printf("Enter the first string: ");
+    printf("Enter the first string:\n");
     fgets(str1, sizeof(str1), stdin);
-    printf("Enter the second string: ");
+    printf("Enter the second string:\n");
     fgets(str2, sizeof(str2), stdin);
-    printf("Enter a character to search for in the second string: ");
+    printf("Enter a character to search for in the second string:\n");
     scanf("%c", &ch);
 
     /* Get user input for the number of characters to compare */
-    printf("Enter the number of characters to compare (integer): ");
+    printf("Enter the number of characters to compare (integer):\n");
     scanf("%lu", &n);
 
     /* Compare the specified number of characters in the strings using strncmp */
-    printf("\nComparing the first %lu characters of %s and %s using strncmp:\n", n, str1, str2);
+    printf("Comparing the first %lu characters of %s and %s using strncmp:\n", n, str1, str2);
     result = strncmp(str1, str2, n);
     if (result == 0) {
         printf("The first %lu characters are equal.\n", n);
