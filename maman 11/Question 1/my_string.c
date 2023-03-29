@@ -2,17 +2,17 @@
 
 
 /**
- * strcmp - compares two strings lexicographically
+ * my_strcmp - compares two strings lexicographically
  * @str1: first string to compare
  * @str2: second string to compare
  *
  * Return: an integer greater than, equal to, or less than zero if str1 is greater than, equal to,
  *         or less than str2 respectively.
  */
-int strcmp(char *str1, char *str2);
+int my_strcmp(char *str1, char *str2);
 
 /**
- * strncmp - compares two strings lexicographically up to a specified number of characters
+ * my_strncmp - compares two strings lexicographically up to a specified number of characters
  * @str1: first string to compare
  * @str2: second string to compare
  * @n: maximum number of characters to compare
@@ -20,17 +20,17 @@ int strcmp(char *str1, char *str2);
  * Return: an integer greater than, equal to, or less than zero if the first n characters of str1
  *         is greater than, equal to, or less than the first n characters of str2 respectively.
  */
-int strncmp(char *str1, char *str2, size_t n);
+int my_strncmp(char *str1, char *str2, size_t n);
 
 /**
- * strchr - finds the first occurrence of a character in a string
+ * _mystrchr - finds the first occurrence of a character in a string
  * @str: string to search
  * @ch: character to find
  *
  * Return: a pointer to the first occurrence of the character ch in the string str, or NULL if the
  *         character is not found.
  */
-char *strchr(char *str, int ch);
+char* _mystrchr(char *str, int ch);
 
 
 
@@ -56,9 +56,9 @@ int main() {
     printf("Enter the number of characters to compare (integer):\n");
     scanf("%lu", &n);
 
-    /* Compare the specified number of characters in the strings using strncmp */
-    printf("Comparing the first %lu characters of %s and %s using strncmp:\n", n, str1, str2);
-    result = strncmp(str1, str2, n);
+    /* Compare the specified number of characters in the strings using my_strncmp */
+    printf("Comparing the first %lu characters of %s and %s using my_strncmp:\n", n, str1, str2);
+    result = my_strncmp(str1, str2, n);
     if (result == 0) {
         printf("The first %lu characters are equal.\n", n);
     } else if (result < 0) {
@@ -67,9 +67,9 @@ int main() {
         printf("The first %lu characters of %s are greater than the first %lu characters of %s.\n", n, str1, n, str2);
     }
 
-    /* Compare the strings using strcmp */
-    printf("\nComparing %s and %s using strcmp:\n", str1, str2);
-    result = strcmp(str1, str2);
+    /* Compare the strings using my_strcmp */
+    printf("\nComparing %s and %s using my_strcmp:\n", str1, str2);
+    result = my_strcmp(str1, str2);
     if (result == 0) {
         printf("The strings are equal.\n");
     } else if (result < 0) {
@@ -78,9 +78,9 @@ int main() {
         printf("%s is greater than %s.\n", str1, str2);
     }
 
-    /* Search for the character in the second string using strchr */
-    printf("\nSearching for '%c' in %s using strchr:\n", ch, str2);
-    result_ch = strchr(str2, ch);
+    /* Search for the character in the second string using _mystrchr */
+    printf("\nSearching for '%c' in %s using _mystrchr:\n", ch, str2);
+    result_ch = _mystrchr(str2, ch);
     if (result_ch != NULL) {
         printf("%c was found at position %ld.\n", ch, result_ch - str2);
     }      else {
@@ -90,7 +90,7 @@ int main() {
     return 0;
 }
 
-int strcmp(char *s1, char *s2)
+int my_strcmp(char *s1, char *s2)
 {
     unsigned char *p1 = (unsigned char *)s1; /* Pointer to the beginning of s1 */
     unsigned char *p2 = (unsigned char *)s2; /* Pointer to the beginning of s2 */
@@ -112,7 +112,7 @@ int strcmp(char *s1, char *s2)
     }
 }
 
-int strncmp(char *s1, char *s2, size_t n)
+int my_strncmp(char *s1, char *s2, size_t n)
 {
     unsigned char *p1 = (unsigned char *)s1; /* Pointer to the beginning of s1 */
     unsigned char *p2 = (unsigned char *)s2; /* Pointer to the beginning of s2 */
@@ -135,7 +135,7 @@ int strncmp(char *s1, char *s2, size_t n)
     }
 }
 
-char *strchr(char *s, int c)
+char* _mystrchr(char *s, int c)
 {
     unsigned char *p = (unsigned char *)s; /* Pointer to the beginning of s */
 
