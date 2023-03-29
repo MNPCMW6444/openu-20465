@@ -46,9 +46,9 @@ int main() {
 
     /* Get user inputs for two strings and a character */
     printf("Enter the first string:\n");
-    fgets(str1, sizeof(str1), stdin);
+    fgets(%s, str1);
     printf("Enter the second string:\n");
-    fgets(str2, sizeof(str2), stdin);
+    fgets(%s, str2);
     printf("Enter a character to search for in the second string:\n");
     scanf("%c", &ch);
 
