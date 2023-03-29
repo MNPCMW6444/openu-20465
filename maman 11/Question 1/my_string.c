@@ -21,8 +21,8 @@ int main() {
     char str2[100];
     size_t n;
     char ch;
-    int result
-    char* result_ch 
+    int result;
+    char* result_ch;
 
     /* Get user inputs for two strings and a character */
     printf("Enter the first string: ");
@@ -70,38 +70,65 @@ int main() {
     return 0;
 }
 
+int strcmp(char *s1, char *s2)
+{
+    unsigned char *p1 = (unsigned char *)s1; /* Pointer to the beginning of s1 */
+    unsigned char *p2 = (unsigned char *)s2; /* Pointer to the beginning of s2 */
 
-int strcmp(const char* str1, const char* str2) {
-    /* Iterate through both strings until a difference is found or the end of a string is reached */
-    while (*str1 && (*str1 == *str2)) {
-        str1++;
-        str2++;
+    /* Compare each character in s1 and s2 until a difference is found or a null terminator is reached */
+    while (*p1 != '\0' && *p2 != '\0' && *p1 == *p2) {
+        p1++;
+        p2++;
     }
-    /* Return the difference of the ASCII values of the characters at the point where the strings differ */
-    return *(const unsigned char*)str1 - *(const unsigned char*)str2;
+
+    /* If the characters match up until the null terminator, the strings are equal
+     * Otherwise, return the difference between the two non-matching characters */
+    if (*p1 == *p2) {
+        return 0;
+    } else if (*p1 < *p2) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
-int strncmp(const char* str1, const char* str2, size_t n) {
-    /* Iterate through both strings up to n characters or until a difference is found or the end of a string is reached */
-    for (size_t i = 0; i < n && (*str1 || *str2); i++, str1++, str2++) {
-        if (*str1 != *str2) {
-            /* Return the difference of the ASCII values of the characters at the point where the strings differ */
-            return *(const unsigned char*)str1 - *(const unsigned char*)str2;
-        }
+int strncmp(char *s1, char *s2, size_t n)
+{
+    unsigned char *p1 = (unsigned char *)s1; /* Pointer to the beginning of s1 */
+    unsigned char *p2 = (unsigned char *)s2; /* Pointer to the beginning of s2 */
+
+    /* Compare each character in s1 and s2 until a difference is found or n characters have been compared */
+    while (n > 0 && *p1 != '\0' && *p2 != '\0' && *p1 == *p2) {
+        p1++;
+        p2++;
+        n--;
     }
-    /* If no differences are found in the first n characters, return 0 */
-    return 0;
+
+    /* If the characters match up until n characters have been compared, the strings are equal
+     * Otherwise, return the difference between the two non-matching characters */
+    if (n == 0 || *p1 == *p2) {
+        return 0;
+    } else if (*p1 < *p2) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
-char* strchr(const char* str, int ch) {
-    /* Iterate through the string until the specified character is found or the end of the string is reached */
-    while (*str != '\0') {
-        if (*str == ch) {
-            /* Return a pointer to the position where the specified character is found */
-            return (char*) str;
-        }
-        str++;
+char *strchr(char *s, int c)
+{
+    unsigned char *p = (unsigned char *)s; /* Pointer to the beginning of s */
+
+    /* Search for the first occurrence of c in s */
+    while (*p != '\0' && *p != c) {
+        p++;
     }
-    /* If the specified character is not found, return NULL */
-    return NULL;
+
+    /* If c is found, return a pointer to the first occurrence of c in s
+     * Otherwise, return NULL */
+    if (*p == c) {
+        return (char *)p;
+    } else {
+        return NULL;
+    }
 }
