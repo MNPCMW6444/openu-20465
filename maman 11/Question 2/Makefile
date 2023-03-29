@@ -1,14 +1,14 @@
 CC = gcc
 CFLAGS = -ansi -Wall -pedantic
-TARGET = my_string
+TARGET = count_bits
 
 all: $(TARGET)
 
-$(TARGET): my_string.o
-	$(CC) $(CFLAGS) -o $(TARGET) my_string.o
+$(TARGET): count_bits.o
+	$(CC) $(CFLAGS) -o $(TARGET) count_bits.o
 
-my_string.o: my_string.c
-	$(CC) $(CFLAGS) -c my_string.c
+count_bits.o: count_bits.c
+	$(CC) $(CFLAGS) -c count_bits.c
 
 clean:
 	rm -f *.o $(TARGET)
