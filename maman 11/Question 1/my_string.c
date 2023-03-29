@@ -50,7 +50,7 @@ int main() {
     printf("Enter the second string:\n");
     scanf("%s", str2);
     printf("Enter a character to search for in the second string:\n");
-    scanf("%c", &ch);
+    scanf(" %c", &ch);
 
     /* Get user input for the number of characters to compare */
     printf("Enter the number of characters to compare (integer):\n");
