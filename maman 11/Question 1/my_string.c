@@ -57,7 +57,7 @@ int main() {
     scanf("%lu", &n);
 
     /* Compare the specified number of characters in the strings using my_strncmp */
-    printf("Comparing the first %lu characters of %s and %s using my_strncmp:\n", n, str1, str2);
+    printf("\nComparing the first %lu characters of %s and %s using my_strncmp:\n", n, str1, str2);
     result = my_strncmp(str1, str2, n);
     if (result == 0) {
         printf("The first %lu characters are equal.\n", n);
