@@ -69,8 +69,6 @@ int main() {
 }
 
 
-
-
 int strcmp(const char* str1, const char* str2) {
     /* Iterate through both strings until a difference is found or the end of a string is reached */
     while (*str1 && (*str1 == *str2)) {
