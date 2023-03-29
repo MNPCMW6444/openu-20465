@@ -1,19 +1,39 @@
 #include <stdio.h>
 
-/**
- * strcmp - compares two strings to determine their lexicographical order
- */
-int strcmp(const char* str1, const char* str2);
 
 /**
- * strncmp - compares a specified number of characters in two strings to determine their lexicographical order
+ * strcmp - compares two strings lexicographically
+ * @str1: first string to compare
+ * @str2: second string to compare
+ *
+ * Return: an integer greater than, equal to, or less than zero if str1 is greater than, equal to,
+ *         or less than str2 respectively.
  */
-int strncmp(const char* str1, const char* str2, size_t n);
+int strcmp(char *str1, char *str2);
 
 /**
- * strchr - searches a string for the first occurrence of a specified character
+ * strncmp - compares two strings lexicographically up to a specified number of characters
+ * @str1: first string to compare
+ * @str2: second string to compare
+ * @n: maximum number of characters to compare
+ *
+ * Return: an integer greater than, equal to, or less than zero if the first n characters of str1
+ *         is greater than, equal to, or less than the first n characters of str2 respectively.
  */
-char* strchr(const char* str, int ch);
+int strncmp(char *str1, char *str2, size_t n);
+
+/**
+ * strchr - finds the first occurrence of a character in a string
+ * @str: string to search
+ * @ch: character to find
+ *
+ * Return: a pointer to the first occurrence of the character ch in the string str, or NULL if the
+ *         character is not found.
+ */
+char *strchr(char *str, int ch);
+
+
+
 
 int main() {
     /* Declare variables to store user inputs */
