@@ -28,11 +28,11 @@ int main() {
     printf("Enter the second string: ");
     fgets(str2, sizeof(str2), stdin);
     printf("Enter a character to search for in the second string: ");
-    scanf(" %c", &ch);
+    scanf("%c", &ch);
 
     /* Get user input for the number of characters to compare */
     printf("Enter the number of characters to compare (integer): ");
-    scanf("%zu", &n);
+    scanf("%lu", &n);
 
     /* Compare the specified number of characters in the strings using strncmp */
     printf("\nComparing the first %zu characters of '%s' and '%s' using strncmp:\n", n, str1, str2);
