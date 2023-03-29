@@ -21,6 +21,8 @@ int main() {
     char str2[100];
     size_t n;
     char ch;
+    int result
+    char* result_ch 
 
     /* Get user inputs for two strings and a character */
     printf("Enter the first string: ");
@@ -36,7 +38,7 @@ int main() {
 
     /* Compare the specified number of characters in the strings using strncmp */
     printf("\nComparing the first %lu characters of '%s' and '%s' using strncmp:\n", n, str1, str2);
-    int result = strncmp(str1, str2, n);
+    result = strncmp(str1, str2, n);
     if (result == 0) {
         printf("The first %lu characters are equal.\n", n);
     } else if (result < 0) {
@@ -58,7 +60,7 @@ int main() {
 
     /* Search for the character in the second string using strchr */
     printf("\nSearching for '%c' in '%s' using strchr:\n", ch, str2);
-    char* result_ch = strchr(str2, ch);
+    result_ch = strchr(str2, ch);
     if (result_ch != NULL) {
         printf("'%c' was found at position %ld.\n", ch, result_ch - str2);
     }      else {
