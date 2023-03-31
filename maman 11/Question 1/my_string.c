@@ -54,17 +54,17 @@ int main() {
 
     /* Get user input for the number of characters to compare */
     printf("Enter the number of characters to compare (integer):\n");
-    scanf("%lu", &n);
+    scanf("%zu", &n);
 
     /* Compare the specified number of characters in the strings using my_strncmp */
-    printf("\nComparing the first %lu characters of %s and %s using my_strncmp:\n", n, str1, str2);
+    printf("\nComparing the first %zu characters of %s and %s using my_strncmp:\n", n, str1, str2);
     result = my_strncmp(str1, str2, n);
     if (result == 0) {
-        printf("The first %lu characters are equal.\n", n);
+        printf("The first %zu characters are equal.\n", n);
     } else if (result < 0) {
-        printf("The first %lu characters of %s are less than the first %lu characters of %s.\n", n, str1, n, str2);
+        printf("The first %zu characters of %s are less than the first %zu characters of %s.\n", n, str1, n, str2);
     } else {
-        printf("The first %lu characters of %s are greater than the first %lu characters of %s.\n", n, str1, n, str2);
+        printf("The first %zu characters of %s are greater than the first %zu characters of %s.\n", n, str1, n, str2);
     }
 
     /* Compare the strings using my_strcmp */
