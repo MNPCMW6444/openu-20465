@@ -35,11 +35,12 @@ int *set_get(int *size) {
     int *set = NULL;
     int capacity = 0;
     int value;
+    int i;
 
     while (scanf("%d", &value) != EOF) {
         /* Check if the value is already in the set */
         int exists = 0;
-        for (int i = 0; i < *size; i++) {
+        for (i = 0; i < *size; i++) {
             if (set[i] == value) {
                 exists = 1;
                 break;
@@ -67,7 +68,8 @@ int *set_get(int *size) {
  * Output: None
  */
 void set_print(const int *set, int size) {
-    for (int i = 0; i < size; i++) {
+    int i;
+    for (i = 0; i < size; i++) {
         printf("%d ", set[i]);
     }
     printf("\n");
@@ -75,9 +77,10 @@ void set_print(const int *set, int size) {
 
 int main() {
     int set_size = 0;
+    int *set;
 
     printf("Please enter the integer values (Ctrl-D to finish):\n");
-    int *set = set_get(&set_size);
+    set = set_get(&set_size);
     set_print(set, set_size);
 
     free(set);
