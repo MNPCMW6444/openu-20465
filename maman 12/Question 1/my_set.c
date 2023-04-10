@@ -20,10 +20,6 @@
 
 #define SIZE_ENLARGE 10
 
-/* Function prototypes */
-int *set_get(int *size);
-void set_print(const int *set, int size);
-
 /*
  * Function: int *set_get(int *size)
  * Purpose: Reads integers from the user and creates a set from them.
@@ -31,6 +27,17 @@ void set_print(const int *set, int size);
  * Output: Returns a pointer to an int array representing the set. The array is dynamically allocated.
  * Algorithm: Uses a dynamic array and realloc to handle an unlimited number of input integers.
  */
+int *set_get(int *size);
+
+/*
+ * Function: void set_print(const int *set, int size)
+ * Purpose: Prints the set elements in the order they were received.
+ * Input: A pointer to an int array representing the set and the size of the set.
+ * Output: None
+ */
+void set_print(const int *set, int size);
+
+
 int *set_get(int *size) {
     int *set = NULL;
     int capacity = 0;
@@ -61,12 +68,7 @@ int *set_get(int *size) {
     return set;
 }
 
-/*
- * Function: void set_print(const int *set, int size)
- * Purpose: Prints the set elements in the order they were received.
- * Input: A pointer to an int array representing the set and the size of the set.
- * Output: None
- */
+
 void set_print(const int *set, int size) {
     int i;
     for (i = 0; i < size; i++) {
