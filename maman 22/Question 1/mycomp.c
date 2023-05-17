@@ -5,8 +5,8 @@ int main()
 {
     complex c1 = {1.0, 2.0};
     complex c2 = {3.0, 4.0};
-    complex sum
-    
+    complex sum;
+
     printf("First complex number: ");
     comp_print(c1);
 
