@@ -36,7 +36,7 @@ complex comp_mult(complex a, complex b)
 }
 
 /* Function to print a complex number */
-void comp_print(complex a)
-{
-    printf("%.2lf + %.2lfi\n", a.real, a.imag);
+void comp_print(complex a) {
+    printf("%.2f + %.2fi\n", a.real, a.imag);
 }
+
