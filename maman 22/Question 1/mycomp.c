@@ -30,6 +30,10 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     /* Handle the comp_read command */
     
     complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
+    comp1 = NULL;
+    comp2 = NULL;
+    comp_result = NULL;
+
 
     if (strncmp(command, "comp_read", 9) == 0) {
         char comp_name;
@@ -85,7 +89,7 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'F': comp_result = F; break;
         }
         if (comp1 && comp2 && comp_result) {
-            *comp_result = comp_add(comp1, comp2);
+            *comp_result = comp_add(*comp1, *comp2);
         }
     /* Handle other commands */
     } else {
