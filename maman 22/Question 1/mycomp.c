@@ -48,9 +48,12 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'F': F->real = real; F->imag = imag; break;
         }
     /* Handle the comp_print command */
-    } else if (strncmp(command, "comp_print", 10) == 0) {
-        char comp_name;
-        sscanf(command, "comp_print %c", &comp_name);
+ } else if (strncmp(command, "comp_add", 8) == 0) {
+        char comp_name1, comp_name2, comp_name_result;
+        sscanf(command, "comp_add %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
+        comp1 = NULL;
+        comp2 = NULL;
+        comp_result = NULL;
         switch(comp_name) {
             case 'A': comp_print(*A); break;
             case 'B': comp_print(*B); break;
