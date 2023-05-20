@@ -26,7 +26,7 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'E': comp_print(*E); break;
             case 'F': comp_print(*F); break;
         }
-    } // and so on for each of the commands in your assignment
+    } /* and so on for each of the commands in your assignment */
 }
 
 int main()
