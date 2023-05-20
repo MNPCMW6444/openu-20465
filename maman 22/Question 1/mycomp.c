@@ -28,6 +28,9 @@ int main() {
 /* Function to handle the commands entered by the user */
 void handle_command(char* command, complex* A, complex* B, complex* C, complex* D, complex* E, complex* F) {
     /* Handle the comp_read command */
+    
+    complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
+
     if (strncmp(command, "comp_read", 9) == 0) {
         char comp_name;
         double real, imag;
@@ -56,7 +59,7 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     } else if (strncmp(command, "comp_add", 8) == 0) {
         char comp_name1, comp_name2, comp_name_result;
         sscanf(command, "comp_add %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
-        complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
+        *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
         switch(comp_name1) {
             case 'A': comp1 = A; break;
             case 'B': comp1 = B; break;
