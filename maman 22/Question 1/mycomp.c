@@ -29,7 +29,7 @@ int main() {
 void handle_command(char* command, complex* A, complex* B, complex* C, complex* D, complex* E, complex* F) {
     /* Handle the comp_read command */
     
-    complex comp1 = {0, 0}, comp2 =  {0, 0}, comp_result =  {0, 0};
+    complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
 
     if (strncmp(command, "comp_read", 9) == 0) {
         char comp_name;
