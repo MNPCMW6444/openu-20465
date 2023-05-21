@@ -32,17 +32,20 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
 
     if (strncmp(command, "read_comp", 9) == 0) {
-        char comp_name;
-        double real, imag;
-        sscanf(command, "read_comp %c, %lf, %lf", &comp_name, &real, &imag);
-        switch(comp_name) {
-            case 'A': A->real = real; A->imag = imag; break;
-            case 'B': B->real = real; B->imag = imag; break;
-            case 'C': C->real = real; C->imag = imag; break;
-            case 'D': D->real = real; D->imag = imag; break;
-            case 'E': E->real = real; E->imag = imag; break;
-            case 'F': F->real = real; F->imag = imag; break;
-        }
+    char comp_name;
+    double real, imag;
+    if (sscanf(command, "read_comp %c %lf %lf", &comp_name, &real, &imag) != 3) {
+        printf("Improperly formatted command. Use: read_comp <comp_name> <real_part> <imaginary_part>\n");
+        return;
+    }
+    switch(comp_name) {
+        case 'A': A->real = real; A->imag = imag; break;
+        case 'B': B->real = real; B->imag = imag; break;
+        case 'C': C->real = real; C->imag = imag; break;
+        case 'D': D->real = real; D->imag = imag; break;
+        case 'E': E->real = real; E->imag = imag; break;
+        case 'F': F->real = real; F->imag = imag; break;
+    }
     /* Handle the print_comp command */
  } else if (strncmp(command, "print_comp", 10) == 0) {
         char comp_name;
