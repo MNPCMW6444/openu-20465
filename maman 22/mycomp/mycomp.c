@@ -39,12 +39,12 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
         return;
     }
     switch(comp_name) {
-        case 'A': A->real = real; A->imag = imag; break;
-        case 'B': B->real = real; B->imag = imag; break;
-        case 'C': C->real = real; C->imag = imag; break;
-        case 'D': D->real = real; D->imag = imag; break;
-        case 'E': E->real = real; E->imag = imag; break;
-        case 'F': F->real = real; F->imag = imag; break;
+        case 'A': A->real = real; A->imag = imag; print_comp(*A); break;
+        case 'B': B->real = real; B->imag = imag; print_comp(*B); break;
+        case 'C': C->real = real; C->imag = imag; print_comp(*C); break;
+        case 'D': D->real = real; D->imag = imag; print_comp(*D); break;
+        case 'E': E->real = real; E->imag = imag; print_comp(*E); break;
+        case 'F': F->real = real; F->imag = imag; print_comp(*F); break;
     }
     /* Handle the print_comp command */
  } else if (strncmp(command, "print_comp", 10) == 0) {
