@@ -30,10 +30,6 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     /* Handle the read_comp command */
     
     complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
-    comp1 = NULL;
-    comp2 = NULL;
-    comp_result = NULL;
-
 
     if (strncmp(command, "read_comp", 9) == 0) {
         char comp_name;
@@ -48,12 +44,9 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'F': F->real = real; F->imag = imag; break;
         }
     /* Handle the comp_print command */
- } else if (strncmp(command, "add_comp", 8) == 0) {
-        char comp_name1, comp_name2, comp_name_result;
-        sscanf(command, "add_comp %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
-        comp1 = NULL;
-        comp2 = NULL;
-        comp_result = NULL;
+ } else if (strncmp(command, "comp_print", 10) == 0) {
+        char comp_name;
+        sscanf(command, "comp_print %c", &comp_name);
         switch(comp_name) {
             case 'A': comp_print(*A); break;
             case 'B': comp_print(*B); break;
@@ -66,7 +59,11 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     } else if (strncmp(command, "add_comp", 8) == 0) {
         char comp_name1, comp_name2, comp_name_result;
         sscanf(command, "add_comp %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
-        *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
+
+        comp1 = NULL;
+        comp2 = NULL;
+        comp_result = NULL;
+
         switch(comp_name1) {
             case 'A': comp1 = A; break;
             case 'B': comp1 = B; break;
