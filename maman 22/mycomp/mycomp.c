@@ -43,17 +43,17 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'E': E->real = real; E->imag = imag; break;
             case 'F': F->real = real; F->imag = imag; break;
         }
-    /* Handle the comp_print command */
- } else if (strncmp(command, "comp_print", 10) == 0) {
+    /* Handle the print_comp command */
+ } else if (strncmp(command, "print_comp", 10) == 0) {
         char comp_name;
-        sscanf(command, "comp_print %c", &comp_name);
+        sscanf(command, "print_comp %c", &comp_name);
         switch(comp_name) {
-            case 'A': comp_print(*A); break;
-            case 'B': comp_print(*B); break;
-            case 'C': comp_print(*C); break;
-            case 'D': comp_print(*D); break;
-            case 'E': comp_print(*E); break;
-            case 'F': comp_print(*F); break;
+            case 'A': print_comp(*A); break;
+            case 'B': print_comp(*B); break;
+            case 'C': print_comp(*C); break;
+            case 'D': print_comp(*D); break;
+            case 'E': print_comp(*E); break;
+            case 'F': print_comp(*F); break;
         }
     /* Handle the add_comp command */
     } else if (strncmp(command, "add_comp", 8) == 0) {

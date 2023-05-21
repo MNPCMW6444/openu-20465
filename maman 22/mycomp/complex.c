@@ -10,7 +10,7 @@
 
 /* Function to add two complex numbers */
 complex _add_comp(complex a, complex b)
-
+{
     complex c;
     c.real = a.real + b.real;
     c.imag = a.imag + b.imag;
