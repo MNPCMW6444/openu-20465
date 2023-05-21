@@ -9,7 +9,7 @@
 #include "complex.h"
 
 /* Function to add two complex numbers */
-complex _add_comp(complex a, complex b)
+complex add_comp(complex a, complex b)
 {
     complex c;
     c.real = a.real + b.real;
