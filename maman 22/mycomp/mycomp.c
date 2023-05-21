@@ -27,7 +27,7 @@ int main() {
 
 /* Function to handle the commands entered by the user */
 void handle_command(char* command, complex* A, complex* B, complex* C, complex* D, complex* E, complex* F) {
-    /* Handle the comp_read command */
+    /* Handle the read_comp command */
     
     complex *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
     comp1 = NULL;
@@ -35,10 +35,10 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
     comp_result = NULL;
 
 
-    if (strncmp(command, "comp_read", 9) == 0) {
+    if (strncmp(command, "read_comp", 9) == 0) {
         char comp_name;
         double real, imag;
-        sscanf(command, "comp_read %c, %lf, %lf", &comp_name, &real, &imag);
+        sscanf(command, "read_comp %c, %lf, %lf", &comp_name, &real, &imag);
         switch(comp_name) {
             case 'A': A->real = real; A->imag = imag; break;
             case 'B': B->real = real; B->imag = imag; break;
@@ -48,9 +48,9 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'F': F->real = real; F->imag = imag; break;
         }
     /* Handle the comp_print command */
- } else if (strncmp(command, "comp_add", 8) == 0) {
+ } else if (strncmp(command, "add_comp", 8) == 0) {
         char comp_name1, comp_name2, comp_name_result;
-        sscanf(command, "comp_add %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
+        sscanf(command, "add_comp %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
         comp1 = NULL;
         comp2 = NULL;
         comp_result = NULL;
@@ -62,10 +62,10 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'E': comp_print(*E); break;
             case 'F': comp_print(*F); break;
         }
-    /* Handle the comp_add command */
-    } else if (strncmp(command, "comp_add", 8) == 0) {
+    /* Handle the add_comp command */
+    } else if (strncmp(command, "add_comp", 8) == 0) {
         char comp_name1, comp_name2, comp_name_result;
-        sscanf(command, "comp_add %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
+        sscanf(command, "add_comp %c, %c, %c", &comp_name1, &comp_name2, &comp_name_result);
         *comp1 = NULL, *comp2 = NULL, *comp_result = NULL;
         switch(comp_name1) {
             case 'A': comp1 = A; break;
@@ -92,7 +92,7 @@ void handle_command(char* command, complex* A, complex* B, complex* C, complex* 
             case 'F': comp_result = F; break;
         }
         if (comp1 && comp2 && comp_result) {
-            *comp_result = comp_add(*comp1, *comp2);
+            *comp_result = add_comp(*comp1, *comp2);
         }
     /* Handle other commands */
     } else {
