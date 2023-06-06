@@ -9,7 +9,7 @@
 #include "complex.h"
 
 /* Function to add two complex numbers */
-complex comp_add(complex a, complex b)
+complex add_comp(complex a, complex b)
 {
     complex c;
     c.real = a.real + b.real;
@@ -18,7 +18,7 @@ complex comp_add(complex a, complex b)
 }
 
 /* Function to subtract two complex numbers */
-complex comp_sub(complex a, complex b)
+complex sub_comp(complex a, complex b)
 {
     complex c;
     c.real = a.real - b.real;
@@ -27,7 +27,7 @@ complex comp_sub(complex a, complex b)
 }
 
 /* Function to multiply two complex numbers */
-complex comp_mult(complex a, complex b)
+complex mult_comp(complex a, complex b)
 {
     complex c;
     c.real = a.real * b.real - a.imag * b.imag;
@@ -36,7 +36,7 @@ complex comp_mult(complex a, complex b)
 }
 
 /* Function to print a complex number */
-void comp_print(complex a) {
+void print_comp(complex a) {
     printf("%.2f + %.2fi\n", a.real, a.imag);
 }
 
