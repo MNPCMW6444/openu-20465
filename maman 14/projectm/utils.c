@@ -27,7 +27,7 @@ unsigned int extract_bits(unsigned int word, int start, int end)
 /* Converting a word to 2 digits in base 32 (as a string) */
 char *convert_to_base_64(unsigned int num)
 {
-    char *base64_seq = (char *) malloc(BASE64_SEQUENCE_LENGTH);
+    char *base64_seq = (char *) malloc(BASE64_WORD_LENGTH);
 
     /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
     base64_seq[0] = base64[extract_bits(num, 6, 11)];
@@ -129,7 +129,7 @@ void encode_to_instructions(unsigned int word)
 /* This functions returns 1 if there's an error (AKA: global variable err has changed) */
 int is_error()
 {
-    return err != NO_ERROR;
+    return err != SUCCESS;
 }
 
 /* This function receives line number as a parameter and prints a detailed error message
@@ -349,7 +349,7 @@ char *next_list_token(char *dest, char *line)
  */
 char *next_token_string(char *dest, char *line)
 {
-    char temp[LINE_LENGTH];
+    char temp[MAX_LINES];
     line = next_list_token(dest, line);
     if(*dest != '"') return line;
     while(!end_of_line(line) && dest[strlen(dest) - 1] != '"')
@@ -382,7 +382,7 @@ void copy_token(char *dest, char *line)
     int i = 0;
     if(dest == NULL || line == NULL) return;
 
-    while(i < LINE_LENGTH && !isspace(line[i]) && line[i] != '\0') /* Copying token until its end to *dest */
+    while(i < MAX_LINES && !isspace(line[i]) && line[i] != '\0') /* Copying token until its end to *dest */
     {
         dest[i] = line[i];
         i++;

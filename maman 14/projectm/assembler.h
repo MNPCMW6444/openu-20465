@@ -36,7 +36,7 @@
 
 #define MAX_EXTENSION_LENGTH 5
 
-#define BASE64_WORD_LENGTH 3 /* A base32 sequence of a word consists of 2 digits (and '\0' ending) */
+#define BASE64_WORD_LENGTH 3 /* A base64 sequence of a word consists of 2 chars (and '\0' ending) */
 
 /**************************************** Other Constants ****************************************/
 
@@ -48,7 +48,7 @@
 #define BITS_IN_OPCODE 4
 #define BITS_IN_METHOD 3
 #define BITS_IN_ARE 2
-#define BITS_IN_REGISTER 
+#define BITS_IN_REGISTER 12
 
 /* Addressing methods bits location in the first word of a command */
 #define SRC_METHOD_START_POS 9

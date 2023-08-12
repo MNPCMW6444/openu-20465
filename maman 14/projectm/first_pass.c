@@ -15,16 +15,16 @@
 /* This function manages all the activities of the first pass */
 void first_pass(FILE *fp)
 {
-    char line[LINE_LENGTH]; /* This string will contain each line at a time */
+    char line[MAX_LINES]; /* This string will contain each line at a time */
     int line_num = 1;       /* Line numbers start from 1 */
 
     /* Initializing data and instructions counter */
     ic = 0;
     dc = 0;
 
-    while (fgets(line, LINE_LENGTH, fp) != NULL) /* Read lines until end of file */
+    while (fgets(line, MAX_LINES, fp) != NULL) /* Read lines until end of file */
     {
-        err = NO_ERROR;    /* Reset the error global var before parsing each line */
+        err = SUCCESS;    /* Reset the error global var before parsing each line */
         if (!ignore(line)) /* Ignore line if it's blank or ; */
             read_line(line);
         if (is_error())
@@ -45,12 +45,12 @@ void first_pass(FILE *fp)
 void read_line(char *line)
 {
     /* Initializing variables for the type of the directive/command */
-    int dir_type = UNKNOWN_TYPE;
+    int dir_type = UNKNOWN_DIRECTIVE;
     int command_type = UNKNOWN_COMMAND;
 
     boolean label = FALSE;           /* This variable will hold TRUE if a label exists in this line */
     labelPtr label_node = NULL;      /* This variable holds optional label in case we create it */
-    char current_token[LINE_LENGTH]; /* This string will hold the current token if we analyze it */
+    char current_token[MAX_LINES]; /* This string will hold the current token if we analyze it */
 
     line = skip_spaces(line); /* skips to the next non-blank/whitepsace character */
     if (end_of_line(line))
@@ -148,7 +148,7 @@ int handle_directive(int type, char *line)
         /* Handle .extern directive */
         return handle_extern_directive(line);
     }
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function analyzes a command, given the type (mov/jmp/etc...) and the sequence of
@@ -225,13 +225,13 @@ int handle_command(int type, char *line)
         }
     }
 
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function handles a .string directive by analyzing it and encoding it to data */
 int handle_string_directive(char *line)
 {
-    char token[LINE_LENGTH];
+    char token[MAX_LINES];
 
     /*line = next_list_token(token, line);
     line = next_token(line);*/
@@ -259,7 +259,7 @@ int handle_string_directive(char *line)
         return ERROR;
     }
 
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function handles analyzing and encoding a .struct directive to data memory,
@@ -267,7 +267,7 @@ int handle_string_directive(char *line)
  */
 int handle_struct_directive(char *line)
 {
-    char token[LINE_LENGTH];
+    char token[MAX_LINES];
     line = next_list_token(token, line); /* Getting the firs token into token array in the line above */
 
     if (!end_of_line(token) && is_number(token)) /* First token must be a number */
@@ -314,7 +314,7 @@ int handle_struct_directive(char *line)
         err = STRUCT_TOO_MANY_OPERANDS;
         return ERROR;
     }
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function parses parameters of a data directive and encodes them to memory */
@@ -375,7 +375,7 @@ int handle_data_directive(char *line)
         err = DATA_UNEXPECTED_COMMA;
         return ERROR;
     }
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function encodes a given number to data */
@@ -398,8 +398,6 @@ void write_string_to_data(char *str)
 /* This function tries to find the addressing method of a given operand and returns -1 if it was not found */
 int detect_method(char *operand)
 {
-    char *struct_field; /* When determining if it's a .struct directive, this will hold the part after the dot */
-
     if (end_of_line(operand))
         return NOT_FOUND;
 
@@ -419,14 +417,6 @@ int detect_method(char *operand)
     else if (is_label(operand, FALSE)) /* Checking if it's a label when there shouldn't be a colon (:) at the end */
         return METHOD_DIRECT;
 
-    /*----- Struct addressing method check -----*/
-    else if (is_label(strtok(operand, "."), FALSE))
-    {                                                             /* Splitting by dot character */
-        struct_field = strtok(NULL, "");                          /* Getting the rest of the string */
-        if (strlen(struct_field) == 1 && (*struct_field == '1' || /* After the dot there should be '1' or '2' */
-                                          *struct_field == '2'))
-            return METHOD_STRUCT;
-    }
     err = COMMAND_INVALID_METHOD;
     return NOT_FOUND;
 }
@@ -445,10 +435,8 @@ boolean command_accept_methods(int type, int first_method, int second_method)
     case SUB:
         return (first_method == METHOD_IMMEDIATE ||
                 first_method == METHOD_DIRECT ||
-                first_method == METHOD_STRUCT ||
                 first_method == METHOD_REGISTER) &&
                (second_method == METHOD_DIRECT ||
-                second_method == METHOD_STRUCT ||
                 second_method == METHOD_REGISTER);
 
     /* LEA opcode only accept
@@ -456,10 +444,8 @@ boolean command_accept_methods(int type, int first_method, int second_method)
      * Destination: 1, 2, 3
      */
     case LEA:
-        return (first_method == METHOD_DIRECT ||
-                first_method == METHOD_STRUCT) &&
+        return (first_method == METHOD_DIRECT) &&
                (second_method == METHOD_DIRECT ||
-                second_method == METHOD_STRUCT ||
                 second_method == METHOD_REGISTER);
 
     /* These opcodes only accept
@@ -475,7 +461,6 @@ boolean command_accept_methods(int type, int first_method, int second_method)
     case RED:
     case JSR:
         return first_method == METHOD_DIRECT ||
-               first_method == METHOD_STRUCT ||
                first_method == METHOD_REGISTER;
 
     /* These opcodes are always ok because they accept all methods/none of them and
@@ -529,9 +514,9 @@ int calculate_command_num_additional_words(int is_first, int is_second, int firs
 {
     int count = 0;
     if (is_first)
-        count += num_words(first_method);
+        count ++;
     if (is_second)
-        count += num_words(second_method);
+        count ++;
 
     /* If both methods are register, they will share the same additional word */
     if (is_first && is_second && first_method == METHOD_REGISTER && second_method == METHOD_REGISTER)
@@ -568,13 +553,6 @@ unsigned int build_first_word(int type, int is_first, int is_second, int first_m
     return word;
 }
 
-/* This function returns how many additional words an addressing method requires */
-int num_words(int method)
-{
-    if (method == METHOD_STRUCT) /* Struct addressing method requires two additional words */
-        return 2;
-    return 1;
-}
 
 /* This function handles an .extern directive */
 int handle_extern_directive(char *line)

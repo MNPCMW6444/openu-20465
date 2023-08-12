@@ -13,14 +13,14 @@
 
 void second_pass(FILE *fp, char *filename)
 {
-    char line[LINE_LENGTH]; /* This string will contain each line at a time */
+    char line[MAX_LINES]; /* This string will contain each line at a time */
     int line_num = 1; /* Line numbers start from 1 */
 
     ic = 0; /* Initializing global instructions counter */
 
-    while(fgets(line, LINE_LENGTH, fp) != NULL) /* Read lines until end of file */
+    while(fgets(line, MAX_LINES, fp) != NULL) /* Read lines until end of file */
     {
-        err = NO_ERROR;
+        err = SUCCESS;
         if(!ignore(line)) /* Ignore line if it's blank or ; */
             read_line_second_pass(line); /* Analyze one line at a time */
         if(is_error()) { /* If there was an error in the current line */
@@ -41,7 +41,7 @@ void second_pass(FILE *fp, char *filename)
 void read_line_second_pass(char *line)
 {
     int dir_type, command_type;
-    char current_token[LINE_LENGTH]; /* will hold current token as needed */
+    char current_token[MAX_LINES]; /* will hold current token as needed */
     line = skip_spaces(line); /* Proceeding to first non-blank character */
     if(end_of_line(line)) return; /* a blank line is not an error */
 
@@ -87,7 +87,7 @@ int write_output_files(char *original)
         write_output_extern(file);
     }
 
-    return NO_ERROR;
+    return SUCCESS;
 }
 
 /* This function writes the .ob file output.
@@ -228,7 +228,7 @@ void check_operands_exist(int type, boolean *is_src, boolean *is_dest)
 /* This function handles commands for the second pass - encoding additional words */
 int handle_command_second_pass(int type, char *line)
 {
-    char first_op[LINE_LENGTH], second_op[LINE_LENGTH]; /* will hold first and second operands */
+    char first_op[MAX_LINES], second_op[MAX_LINES]; /* will hold first and second operands */
     char *src = first_op, *dest = second_op; /* after the check below, src will point to source and
  *                                              dest to destination operands */
     boolean is_src = FALSE, is_dest = FALSE; /* Source/destination operands existence */
@@ -318,7 +318,6 @@ void encode_label(char *label)
 void encode_additional_word(boolean is_dest, int method, char *operand)
 {
     unsigned int word = EMPTY_WORD; /* An empty word */
-    char *temp;
 
     switch (method)
     {
@@ -331,16 +330,6 @@ void encode_additional_word(boolean is_dest, int method, char *operand)
         case METHOD_DIRECT:
             encode_label(operand);
             break;
-
-        case METHOD_STRUCT: /* Before the dot there should be a label, and after it a number */
-            temp = strchr(operand, '.');
-            *temp = '\0';
-            encode_label(operand); /* Label before dot is the first additional word */
-            *temp++ = '.';
-            word = (unsigned int) atoi(temp);
-            word = insert_are(word, ABSOLUTE);
-            encode_to_instructions(word); /* The number after the dot is the second */
-        break;
 
         case METHOD_REGISTER:
             word = build_register_word(is_dest, operand);
