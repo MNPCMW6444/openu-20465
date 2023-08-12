@@ -30,8 +30,8 @@ char *convert_to_base_64(unsigned int num)
     char *base64_seq = (char *) malloc(BASE64_SEQUENCE_LENGTH);
 
     /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
-    base64_seq[0] = base64[extract_bits(num, 5, 9)];
-    base64_seq[1] = base64[extract_bits(num, 0, 4)];
+    base64_seq[0] = base64[extract_bits(num, 6, 11)];
+    base64_seq[1] = base64[extract_bits(num, 0, 5)];
     base64_seq[2] = '\0';
 
     return base64_seq;

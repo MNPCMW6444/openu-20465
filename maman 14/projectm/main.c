@@ -29,18 +29,22 @@ labelPtr symbols_table;
 extPtr ext_list;
 boolean entry_exists, extern_exists, was_error;
 
-const char base32[32] = {
-        '!', '@', '#', '$', '%', '^', '&', '*', '<', '>', 'a', 'b', 'c',
-        'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-        'q', 'r', 's', 't', 'u', 'v'};
+const char base64[] = {
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
+};
+
 
 const char *commands[] = {
-        "mov", "cmp", "add", "sub", "not", "clr", "lea", "inc", "dec", "jmp", "bne",
+        "mov", "cmp", "add", "sub", "lea", "not", "clr", "inc", "dec", "jmp", "bne",
         "red", "prn", "jsr", "rts", "stop"
 };
 
 const char *directives[] = {
-        ".data", ".string", ".struct", ".entry", ".extern"
+        ".data", ".string", ".entry", ".extern"
 };
 
 void reset_global_vars()

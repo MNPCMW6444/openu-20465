@@ -13,9 +13,9 @@
 /**************************************** Defaults ****************************************/
 
 #define MEMORY_START 100
-#define EMPTY_WORD ?
-#define EXTERNAL_DEFAULT_ADDRESS ?
-#define NOT_FOUND ?
+#define EMPTY_WORD 0
+#define EXTERNAL_DEFAULT_ADDRESS 0
+#define NOT_FOUND -1
 #define SUCCESS 0
 #define ERROR 1
 

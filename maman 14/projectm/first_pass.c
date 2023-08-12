@@ -134,11 +134,7 @@ int handle_directive(int type, char *line)
     case STRING:
         /* Handle .string directive and insert all characters (including a '\0') to memory */
         return handle_string_directive(line);
-
-    case STRUCT:
-        /* Handle .struct directive and insert both number and string to memory */
-        return handle_struct_directive(line);
-
+        
     case ENTRY:
         /* Only check for syntax of entry (should not contain more than one parameter) */
         if (!end_of_line(next_token(line))) /* If there's a next token (after the first one) */

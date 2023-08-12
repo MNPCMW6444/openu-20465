@@ -98,7 +98,7 @@ void write_output_ob(FILE *fp)
 {
     unsigned int address = MEMORY_START;
     int i;
-    char *param1 = convert_to_base_32(ic), *param2 = convert_to_base_32(dc);
+    char *param1 = convert_to_base_64(ic), *param2 = convert_to_base_64(dc);
 
     fprintf(fp, "%s\t%s\n\n", param1, param2); /* First line */
     free(param1);
@@ -106,8 +106,8 @@ void write_output_ob(FILE *fp)
 
     for (i = 0; i < ic; address++, i++) /* Instructions memory */
     {
-        param1 = convert_to_base_32(address);
-        param2 = convert_to_base_32(instructions[i]);
+        param1 = convert_to_base_64(address);
+        param2 = convert_to_base_64(instructions[i]);
 
         fprintf(fp, "%s\t%s\n", param1, param2);
 
@@ -117,8 +117,8 @@ void write_output_ob(FILE *fp)
 
     for (i = 0; i < dc; address++, i++) /* Data memory */
     {
-        param1 = convert_to_base_32(address);
-        param2 = convert_to_base_32(data[i]);
+        param1 = convert_to_base_64(address);
+        param2 = convert_to_base_64(data[i]);
 
         fprintf(fp, "%s\t%s\n", param1, param2);
 
@@ -143,7 +143,7 @@ void write_output_entry(FILE *fp)
     {
         if(label -> entry)
         {
-            base32_address = convert_to_base_32(label -> address);
+            base32_address = convert_to_base_64(label -> address);
             fprintf(fp, "%s\t%s\n", label -> name, base32_address);
             free(base32_address);
         }
@@ -164,7 +164,7 @@ void write_output_extern(FILE *fp)
     /* Going through external circular linked list and pulling out values */
     do
     {
-        base32_address = convert_to_base_32(node -> address);
+        base32_address = convert_to_base_64(node -> address);
         fprintf(fp, "%s\t%s\n", node -> name, base32_address); /* Printing to file */
         free(base32_address);
         node = node -> next;
