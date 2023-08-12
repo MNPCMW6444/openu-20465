@@ -407,12 +407,8 @@ int detect_method(char *operand)
         return NOT_FOUND;
 
     /*----- Immediate addressing method check -----*/
-    if (*operand == '#')
-    { /* First character is '#' */
-        operand++;
-        if (is_number(operand))
-            return METHOD_IMMEDIATE;
-    }
+    if (is_number(operand))
+        return METHOD_IMMEDIATE;
 
     /*----- Register addressing method check -----*/
     else if (is_register(operand))
