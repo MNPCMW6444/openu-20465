@@ -69,6 +69,7 @@ int is_error() {
 }
 
 void write_error(int line_num) {
+    fprintf(stderr, "ERROR (line %d): ", line_num);
     const char *error_messages[] = {
         "first non-blank character must be a letter or a dot.",
         "label already exists.",
@@ -76,9 +77,6 @@ void write_error(int line_num) {
         // ... [Add all the other error messages in the order of the error enum]
         "there was an error while trying to open the requested file."
     };
-
-    fprintf(stderr, "ERROR (line %d): ", line_num);
-
     if (err >= 0 && err < sizeof(error_messages) / sizeof(error_messages[0])) {
         fprintf(stderr, "%s\n", error_messages[err]);
     }
