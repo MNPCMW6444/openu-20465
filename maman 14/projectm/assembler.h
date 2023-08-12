@@ -141,9 +141,9 @@ enum
 /* Addressing methods ordered by their code */
 enum methods
 {
-    METHOD_IMMEDIATE,
-    METHOD_DIRECT,
-    METHOD_REGISTER,
+    METHOD_IMMEDIATE = 1,
+    METHOD_DIRECT = 3,
+    METHOD_REGISTER = 5,
     METHOD_UNKNOWN
 };
 

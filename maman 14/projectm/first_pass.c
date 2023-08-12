@@ -151,82 +151,46 @@ int handle_directive(int type, char *line)
     return SUCCESS;
 }
 
+
+
+
 /* This function analyzes a command, given the type (mov/jmp/etc...) and the sequence of
  characters starting after the command.
 
  It will detect the addressing methods of the operands and will encode the first word of
   the command to the instructions memory. */
-int handle_command(int type, char *line)
-{
-    boolean is_first = FALSE, is_second = FALSE; /* These booleans will tell which of the operands were
-                                                     received (not by source/dest, but by order) */
-    int first_method, second_method;             /* These will hold the addressing methods of the operands */
-    char first_op[20], second_op[20];            /* These strings will hold the operands */
+int handle_command(int type, char *line) {
+    char operands[2][MAX_LINES];
+    boolean is_first = FALSE, is_second = FALSE;
+    int first_method, second_method;
 
-    /* Trying to parse 2 operands */
-    line = next_list_token(first_op, line);
-    if (!end_of_line(first_op)) /* If first operand is not empty */
-    {
-        is_first = TRUE; /* First operand exists! */
-        line = next_list_token(second_op, line);
-        if (!end_of_line(second_op)) /* If second operand (should hold temporarily a comma) is not empty */
-        {
-            if (second_op[0] != ',') /* A comma must separate two operands of a command */
-            {
-                err = COMMAND_UNEXPECTED_CHAR;
-                return ERROR;
-            }
+    printf("Operand Count: %d\n", split_by_comma(line, operands));
+   
 
-            else
-            {
-                line = next_list_token(second_op, line);
-                if (end_of_line(second_op)) /* If second operand is not empty */
-                {
-                    err = COMMAND_UNEXPECTED_CHAR;
-                    return ERROR;
-                }
-                is_second = TRUE; /* Second operand exists! */
-            }
+
+    if (split_by_comma(line, operands) > 0) {
+        is_first = TRUE;
+        first_method = detect_method(operands[0]);
+         printf("First Operand Method: %d\n", first_method);
+        if (split_by_comma(line, operands) > 1) {
+            is_second = TRUE;
+            second_method = detect_method(operands[1]);
+                printf("Second Operand Method: %d\n", second_method);
+
         }
     }
-    line = skip_spaces(line);
-    if (!end_of_line(line)) /* If the line continues after two operands */
-    {
-        err = COMMAND_TOO_MANY_OPERANDS;
+
+    if (command_accept_num_operands(type, is_first, is_second) &&
+        command_accept_methods(type, first_method, second_method)) {
+        encode_to_instructions(build_first_word(type, is_first, is_second, first_method, second_method));
+        ic += calculate_command_num_additional_words(is_first, is_second, first_method, second_method);
+    } else {
+        err = (split_by_comma(line, operands) > 2) ? COMMAND_TOO_MANY_OPERANDS : COMMAND_INVALID_OPERANDS_METHODS;
         return ERROR;
     }
-
-    if (is_first)
-        first_method = detect_method(first_op); /* Detect addressing method of first operand */
-    if (is_second)
-        second_method = detect_method(second_op); /* Detect addressing method of second operand */
-
-    if (!is_error()) /* If there was no error while trying to parse addressing methods */
-    {
-        if (command_accept_num_operands(type, is_first, is_second)) /* If number of operands is valid for this specific command */
-        {
-            if (command_accept_methods(type, first_method, second_method)) /* If addressing methods are valid for this specific command */
-            {
-                /* encode first word of the command to memory and increase ic by the number of additional words */
-                encode_to_instructions(build_first_word(type, is_first, is_second, first_method, second_method));
-                ic += calculate_command_num_additional_words(is_first, is_second, first_method, second_method);
-            }
-
-            else
-            {
-                err = COMMAND_INVALID_OPERANDS_METHODS;
-                return ERROR;
-            }
-        }
-        else
-        {
-            err = COMMAND_INVALID_NUMBER_OF_OPERANDS;
-            return ERROR;
-        }
-    }
-
     return SUCCESS;
 }
+
 
 /* This function handles a .string directive by analyzing it and encoding it to data */
 int handle_string_directive(char *line)
@@ -398,8 +362,6 @@ void write_string_to_data(char *str)
 /* This function tries to find the addressing method of a given operand and returns -1 if it was not found */
 int detect_method(char *operand)
 {
-    if (end_of_line(operand))
-        return NOT_FOUND;
 
     /*----- Immediate addressing method check -----*/
     if (*operand == '#')

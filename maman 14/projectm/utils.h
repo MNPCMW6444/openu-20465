@@ -14,6 +14,8 @@ char *skip_spaces(char *ch);
 void copy_token(char *dest, char *line);
 int end_of_line(char *line);
 int ignore(char *line);
+int ignore(char *line);
+int split_by_comma(char *line, char operands[][MAX_LINES]);
 
 /* Helper functions that are used to determine types of tokens */
 int find_index(char *token, const char *arr[], int n);

@@ -440,3 +440,17 @@ int ignore(char *line)
     line = skip_spaces(line);
     return *line == ';' || *line == '\0' || *line == '\n';
 }
+
+
+
+/* Utility function to split line by comma and populate operands array */
+int split_by_comma(char *line, char operands[][MAX_LINES]) {
+    int count = 0;
+    char *token = strtok(line, ",");
+    while (token) {
+        strncpy(operands[count], token, MAX_LINES - 1);
+        token = strtok(NULL, ",");
+        count++;
+    }
+    return count;
+}
