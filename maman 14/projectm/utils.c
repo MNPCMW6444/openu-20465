@@ -1,4 +1,6 @@
-   
+/*****************************************
+	Michael Michael, Michael Michael
+*****************************************/
 
 #include <stdio.h>
 #include <string.h>
@@ -24,12 +26,12 @@ unsigned int extract_bits(unsigned int word, int start, int end)
     return result;
 }
 
-/* Converting a word to 2 digits in base 32 (as a string) */
+/* Converting a word to 2 digits in base 64 (as a string) */
 char *convert_to_base_64(unsigned int num)
 {
     char *base64_seq = (char *) malloc(BASE64_WORD_LENGTH);
 
-    /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
+    /* To convert from binary to base 64 we can just take the 6 right binary digits and 6 left */
     base64_seq[0] = base64[extract_bits(num, 6, 11)];
     base64_seq[1] = base64[extract_bits(num, 0, 5)];
     base64_seq[2] = '\0';
@@ -439,18 +441,4 @@ int ignore(char *line)
 {
     line = skip_spaces(line);
     return *line == ';' || *line == '\0' || *line == '\n';
-}
-
-
-
-/* Utility function to split line by comma and populate operands array */
-int split_by_comma(char *line, char operands[][MAX_LINES]) {
-    int count = 0;
-    char *token = strtok(line, ",");
-    while (token) {
-        strncpy(operands[count], token, MAX_LINES - 1);
-        token = strtok(NULL, ",");
-        count++;
-    }
-    return count;
 }

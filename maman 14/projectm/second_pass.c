@@ -135,7 +135,7 @@ void write_output_ob(FILE *fp)
  */
 void write_output_entry(FILE *fp)
 {
-    char *base32_address;
+    char *base64_address;
 
     labelPtr label = symbols_table;
     /* Go through symbols table and print only symbols that have an entry */
@@ -143,9 +143,9 @@ void write_output_entry(FILE *fp)
     {
         if(label -> entry)
         {
-            base32_address = convert_to_base_64(label -> address);
-            fprintf(fp, "%s\t%s\n", label -> name, base32_address);
-            free(base32_address);
+            base64_address = convert_to_base_64(label -> address);
+            fprintf(fp, "%s\t%s\n", label -> name, base64_address);
+            free(base64_address);
         }
         label = label -> next;
     }
@@ -158,15 +158,15 @@ void write_output_entry(FILE *fp)
  */
 void write_output_extern(FILE *fp)
 {
-    char *base32_address;
+    char *base64_address;
     extPtr node = ext_list;
 
     /* Going through external circular linked list and pulling out values */
     do
     {
-        base32_address = convert_to_base_64(node -> address);
-        fprintf(fp, "%s\t%s\n", node -> name, base32_address); /* Printing to file */
-        free(base32_address);
+        base64_address = convert_to_base_64(node -> address);
+        fprintf(fp, "%s\t%s\n", node -> name, base64_address); /* Printing to file */
+        free(base64_address);
         node = node -> next;
     } while(node != ext_list);
     fclose(fp);
@@ -226,24 +226,39 @@ void check_operands_exist(int type, boolean *is_src, boolean *is_dest)
 }
 
 /* This function handles commands for the second pass - encoding additional words */
-int handle_command_second_pass(int type, char *line) {
-    char operands[2][MAX_LINES];
-    int operand_count = split_by_comma(line, operands);
-    char *src = NULL, *dest = NULL;
-    boolean is_src = FALSE, is_dest = FALSE;
-    int src_method = METHOD_UNKNOWN, dest_method = METHOD_UNKNOWN;
+int handle_command_second_pass(int type, char *line)
+{
+    char first_op[MAX_LINES], second_op[MAX_LINES]; /* will hold first and second operands */
+    char *src = first_op, *dest = second_op; /* after the check below, src will point to source and
+ *                                              dest to destination operands */
+    boolean is_src = FALSE, is_dest = FALSE; /* Source/destination operands existence */
+    int src_method = METHOD_UNKNOWN, dest_method = METHOD_UNKNOWN; /* Their addressing methods */
 
     check_operands_exist(type, &is_src, &is_dest);
-    if (is_src) {
+
+    /* Extracting source and destination addressing methods */
+    if(is_src)
         src_method = extract_bits(instructions[ic], SRC_METHOD_START_POS, SRC_METHOD_END_POS);
-        src = operands[0];
-    }
-    if (is_dest) {
+    if(is_dest)
         dest_method = extract_bits(instructions[ic], DEST_METHOD_START_POS, DEST_METHOD_END_POS);
-        dest = (is_src) ? operands[1] : operands[0];
+
+    /* Matching src and dest pointers to the correct operands (first or second or both) */
+    if(is_src || is_dest)
+    {
+        line = next_list_token(first_op, line);
+        if(is_src && is_dest) /* There are 2 operands */
+        {
+            line = next_list_token(second_op, line);
+            next_list_token(second_op, line);
+        }
+        else
+        {
+            dest = first_op; /* If there's only one operand, it's a destination operand */
+            src = NULL;
+        }
     }
 
-    ic++;
+    ic++; /* The first word of the command was already encoded in this IC in the first pass */
     return encode_additional_words(src, dest, is_src, is_dest, src_method, dest_method);
 }
 
@@ -276,18 +291,26 @@ unsigned int build_register_word(boolean is_dest, char *reg)
 }
 
 /* This function encodes a given label (by name) to memory */
-void encode_label(char *label) {
-    unsigned int word;
-    if (is_existing_label(symbols_table, label)) {
-        word = get_label_address(symbols_table, label);
-        if (is_external_label(symbols_table, label)) {
+void encode_label(char *label)
+{
+    unsigned int word; /* The word to be encoded */
+
+    if(is_existing_label(symbols_table, label)) { /* If label exists */
+        word = get_label_address(symbols_table, label); /* Getting label's address */
+
+        if(is_external_label(symbols_table, label)) { /* If the label is an external one */
+            /* Adding external label to external list (value should be replaced in this address) */
             add_ext(&ext_list, label, ic + MEMORY_START);
             word = insert_are(word, EXTERNAL);
-        } else {
-            word = insert_are(word, RELOCATABLE);
         }
-        encode_to_instructions(word);
-    } else {
+        else
+            word = insert_are(word, RELOCATABLE); /* If it's not an external label, then it's relocatable */
+
+        encode_to_instructions(word); /* Encode word to memory */
+    }
+    else /* It's an error */
+    {
+        ic++;
         err = COMMAND_LABEL_DOES_NOT_EXIST;
     }
 }
