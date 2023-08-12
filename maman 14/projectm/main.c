@@ -47,6 +47,7 @@ const char *directives[] = {
         ".data", ".string", ".entry", ".extern"
 };
 
+
 void reset_global_vars()
 {
     symbols_table = NULL;
@@ -57,32 +58,44 @@ void reset_global_vars()
     was_error = FALSE;
 }
 
-/* This function handles all activities in the program, it receives command line arguments for filenames */
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     int i;
     char *input_filename;
     FILE *fp;
 
-    for(i = 1; i < argc; i++)
+    for (i = 1; i < argc; i++)
     {
         input_filename = create_file_name(argv[i], FILE_INPUT); /* Appending .as to filename */
-        fp = fopen(input_filename, "r");
-        if(fp != NULL) { /* If file exists */
+
+        /* Always check if the file exists before proceeding. */
+        if ((fp = fopen(input_filename, "r")) != NULL)
+        {
             printf("************* Started %s assembling process *************\n\n", input_filename);
 
             reset_global_vars();
             first_pass(fp);
 
-            if (!was_error) { /* procceed to second pass */
+            /* If no error in the first pass, proceed to the second pass. */
+            if (!was_error)
+            {
                 rewind(fp);
                 second_pass(fp, argv[i]);
             }
 
             printf("\n\n************* Finished %s assembling process *************\n\n", input_filename);
+
+            /* Remember to close the file after using it. */
+            fclose(fp);
         }
-        else write_error(CANNOT_OPEN_FILE);
+        else
+        {
+            perror("Error opening file"); /* Use perror to provide more detailed error message */
+            write_error(CANNOT_OPEN_FILE);
+        }
+
         free(input_filename);
     }
 
-	return 0;
+    return 0;
 }
