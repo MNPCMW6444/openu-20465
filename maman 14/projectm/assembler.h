@@ -21,43 +21,40 @@
 
 /**************************************** Limitations ****************************************/
 
-#define MAX_LINES 80 /* maximum chars per line */
-#define MINIMUM_LABEL_LENGTH_WITH_COLON ?
-#define MINIMUM_LABEL_LENGTH_WITHOUT_COLON ?
-#define LABEL_LENGTH ? /* maximum chars per label */
 
-#define MAX_COMMAND_LENGTH ? /* maximum number of characters in a command */
-#define MIN_COMMAND_LENGTH ? /* minimum number of characters in a command */
+#define MAX_LINES 80 /* maximum chars per line */
+#define MINIMUM_LABEL_LENGTH_WITH_COLON 2
+#define MINIMUM_LABEL_LENGTH_WITHOUT_COLON 1
+#define LABEL_LENGTH 30 /* maximum chars per label */
+
+#define MAX_COMMAND_LENGTH 4 /* maximum number of characters in a command */
+#define MIN_COMMAND_LENGTH 3 /* minimum number of characters in a command */
 
 #define REGISTER_LENGTH 2 /* a register's name contains 2 characters */
 #define MIN_REGISTER 0    /* r0 is the first register */
 #define MAX_REGISTER 7    /* r7 is the last register */
 
-#define MAX_EXTENSION_LENGTH ?
+#define MAX_EXTENSION_LENGTH 5
 
 #define BASE64_WORD_LENGTH 3 /* A base32 sequence of a word consists of 2 digits (and '\0' ending) */
 
 /**************************************** Other Constants ****************************************/
 
-#define NUM_DIRECTIVES ? /* number of existing directives*/
+#define NUM_DIRECTIVES 4 /* number of existing directives*/
 #define NUM_COMMANDS 16  /* number of existing commands */
-
-#define FIRST_STRUCT_FIELD ?  /* Index of first struct field */
-#define SECOND_STRUCT_FIELD ? /* Index of second struct field */
 
 /* Bit-related info */
 #define BITS_IN_WORD 12
 #define BITS_IN_OPCODE 4
-#define BITS_IN_METHOD ?
+#define BITS_IN_METHOD 3
 #define BITS_IN_ARE 2
-#define BITS_IN_REGISTER ?
-#define BITS_IN_ADDRESS ?
+#define BITS_IN_REGISTER 
 
 /* Addressing methods bits location in the first word of a command */
-#define SRC_METHOD_START_POS ?
-#define SRC_METHOD_END_POS ?
-#define DEST_METHOD_START_POS ?
-#define DEST_METHOD_END_POS ?
+#define SRC_METHOD_START_POS 9
+#define SRC_METHOD_END_POS 11
+#define DEST_METHOD_START_POS 2
+#define DEST_METHOD_END_POS 4
 
 #define MACHINE_RAM 1024
 
@@ -80,9 +77,9 @@ enum commands
     CMP,
     ADD,
     SUB,
-    LEA,
     NOT,
     CLR,
+    LEA,
     INC,
     DEC,
     JMP,

@@ -39,7 +39,7 @@ const char base64[] = {
 
 
 const char *commands[] = {
-        "mov", "cmp", "add", "sub", "lea", "not", "clr", "inc", "dec", "jmp", "bne",
+        "mov", "cmp", "add", "sub", "not", "clr", "lea", "inc", "dec", "jmp", "bne",
         "red", "prn", "jsr", "rts", "stop"
 };
 
