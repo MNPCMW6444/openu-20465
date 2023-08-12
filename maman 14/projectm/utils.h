@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 /*
 	This file contains prototypes for utilities and helper functions that are being used in the program.

@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 #include "structs.h"
 #include "assembler.h"

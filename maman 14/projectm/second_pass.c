@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 #include <stdio.h>
 #include <string.h>

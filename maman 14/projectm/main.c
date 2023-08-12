@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 /*
     Welcome to our assembler program!

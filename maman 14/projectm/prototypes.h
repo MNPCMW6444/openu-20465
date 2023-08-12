@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 #ifndef PROTOTYPES_H
 

@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 /*
 	This file contains definitions of types and structures that are being used in the program.

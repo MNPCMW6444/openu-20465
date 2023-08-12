@@ -1,6 +1,4 @@
-/*****************************************
-	Michael Michael, Michael Michael
-*****************************************/
+   
 
 #include <stdio.h>
 #include <string.h>
@@ -27,16 +25,16 @@ unsigned int extract_bits(unsigned int word, int start, int end)
 }
 
 /* Converting a word to 2 digits in base 32 (as a string) */
-char *convert_to_base_32(unsigned int num)
+char *convert_to_base_64(unsigned int num)
 {
-    char *base32_seq = (char *) malloc(BASE32_SEQUENCE_LENGTH);
+    char *base64_seq = (char *) malloc(BASE64_SEQUENCE_LENGTH);
 
     /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
-    base32_seq[0] = base32[extract_bits(num, 5, 9)];
-    base32_seq[1] = base32[extract_bits(num, 0, 4)];
-    base32_seq[2] = '\0';
+    base64_seq[0] = base64[extract_bits(num, 5, 9)];
+    base64_seq[1] = base64[extract_bits(num, 0, 4)];
+    base64_seq[2] = '\0';
 
-    return base32_seq;
+    return base64_seq;
 }
 
 /* This function checks if a string is a number (all digits) */
