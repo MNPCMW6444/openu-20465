@@ -402,7 +402,7 @@ void write_string_to_data(char *str)
 /* This function tries to find the addressing method of a given operand and returns -1 if it was not found */
 int detect_method(char *operand)
 {
-    printf("is_number value: %b\n", is_number(operand));
+    
 
     if (end_of_line(operand))
         return NOT_FOUND;
@@ -419,7 +419,11 @@ int detect_method(char *operand)
     else if (is_label(operand, FALSE)) /* Checking if it's a label when there shouldn't be a colon (:) at the end */
         return METHOD_DIRECT;
 
-    err = COMMAND_INVALID_METHOD;
+    else printf("is_number value: %s\n", operand);
+    
+        /*-----     err = COMMAND_INVALID_METHOD;
+ ----- */
+
     return NOT_FOUND;
 }
 

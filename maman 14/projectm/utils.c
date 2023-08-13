@@ -405,10 +405,10 @@ int find_index(char *token, const char *arr[], int n)
 /* Check if a token matches a register name */
 boolean is_register(char *token)
 {
-    /* A register must have 2 characters, the first is 'r' and the second is a number between 0-7 */
-    return strlen(token) == REGISTER_LENGTH && token[0] == 'r' &&
-            token[1] >= '0' &&
-            token[1] <= '7';
+    /* A register must have 3 characters, the first and second are '@r' and the second is a number between 0-7 */
+    return strlen(token) == REGISTER_LENGTH && token[0] == '@' && token[1] == 'r' &&
+            token[2] >= '0' &&
+            token[2] <= '7';
 }
 
 /* Check if a token matches a directive name */
