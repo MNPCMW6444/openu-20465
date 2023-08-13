@@ -402,6 +402,7 @@ void write_string_to_data(char *str)
 /* This function tries to find the addressing method of a given operand and returns -1 if it was not found */
 int detect_method(char *operand)
 {
+    printf("is_number value: %b\n", is_number(operand));
 
     if (end_of_line(operand))
         return NOT_FOUND;
@@ -419,7 +420,6 @@ int detect_method(char *operand)
         return METHOD_DIRECT;
 
     err = COMMAND_INVALID_METHOD;
-    printf("issssss: %d", is_number(operand))
     return NOT_FOUND;
 }
 
