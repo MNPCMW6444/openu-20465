@@ -419,6 +419,7 @@ int detect_method(char *operand)
         return METHOD_DIRECT;
 
     err = COMMAND_INVALID_METHOD;
+    printf("issssss: %d", is_number(operand))
     return NOT_FOUND;
 }
 
