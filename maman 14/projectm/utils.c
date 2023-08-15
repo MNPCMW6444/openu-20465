@@ -395,10 +395,15 @@ void copy_token(char *dest, char *line)
 /* This function finds an index of a string in an array of strings */
 int find_index(char *token, const char *arr[], int n)
 {
-    int i;
+                      int i;
+
+
     for(i = 0; i < n; i++)
         if (strcmp(token, arr[i]) == 0)
+        {
             return i;
+
+        }
     return NOT_FOUND;
 }
 

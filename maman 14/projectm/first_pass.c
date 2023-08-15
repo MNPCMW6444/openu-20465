@@ -84,6 +84,7 @@ void read_line(char *line)
     {
         if (label)
         {
+
             if (dir_type == EXTERN || dir_type == ENTRY)
             { /* we need to ignore creation of label before .entry/.extern */
                 delete_label(&symbols_table, label_node->name);
@@ -91,6 +92,8 @@ void read_line(char *line)
             }
             else
                 label_node->address = dc; /* Address of data label is dc */
+                    return;
+
         }
         line = next_token(line);
         handle_directive(dir_type, line);
