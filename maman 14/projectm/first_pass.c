@@ -419,7 +419,6 @@ int detect_method(char *operand)
     else if (is_label(operand, FALSE)) /* Checking if it's a label when there shouldn't be a colon (:) at the end */
         return METHOD_DIRECT;
 
-    else printf("is_number value: %s\n", operand);
     
         /*-----     err = COMMAND_INVALID_METHOD;
  ----- */
@@ -605,6 +604,8 @@ boolean is_label(char *token, int colon)
     if (token == NULL ||
         token_len < (colon ? MINIMUM_LABEL_LENGTH_WITH_COLON : MINIMUM_LABEL_LENGTH_WITHOUT_COLON))
         return FALSE;
+
+
 
     if (colon && token[token_len - 1] != ':')
         return FALSE; /* if colon = TRUE, there must be a colon at the end */
