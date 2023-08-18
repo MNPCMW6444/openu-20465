@@ -8,54 +8,54 @@
 #include "symbol_table.h"
 #include "prints.h"
 
-/* Main function that reads filenames from the command line arguments
-   and processes each file separately. Filenames are assumed to be provided without extensions. */
-int main(int argc, char* argv[]) {
-    int i;
-    char* fileName; /* Filename passed as a command-line argument */
-    bool pre_proccesor, first_pass, second_pass;
+/* The main function takes filenames from command-line arguments and processes each of them individually.
+   The filenames should be given without extensions. */
+int main(int totalArgs, char* args[]) {
+    int index;
+    char* file; /* File name given as a command-line argument */
+    bool preprocess_status, pass1_status, pass2_status;
 
-    if (argc < 2) {
-        printf("Usage: %s <filename> <filename> ...\n", argv[0]);
-        return 1; /* Return an error code if not enough arguments are provided */
+    if (totalArgs < 2) {
+        printf("Usage: %s <filename> <filename> ...\n", args[0]);
+        return 1; /* An error code is returned if the arguments are insufficient */
     }
 
-    /* Iterate through each provided filename and process it */
-    for (i = 1; i < argc; i++) {
+    /* Each filename given is processed in this loop */
+    for (index = 1; index < totalArgs; index++) {
         create_new_symbol_list();
-        fileName = argv[i];
+        file = args[index];
 
-        /* Preprocess the file and check for failure */
-        pre_proccesor = preprocessor(fileName);
-        if (!pre_proccesor) {
-            printf("ERROR: Preprocessor of %s failed.\n", fileName);
+        /* The file is preprocessed, and failure is checked */
+        preprocess_status = preprocessor(file);
+        if (!preprocess_status) {
+            printf("ERROR: Preprocessing of %s failed.\n", file);
             free_list();
-            removeOutputs(fileName);
+            removeOutputs(file);
             continue;
         }
 
-        /* Run the first pass on the file and check for failure */
-        first_pass = firstPass(fileName);
-        if (!first_pass) {
-            printf("ERROR: First pass of %s failed.\n", fileName);
+        /* The first pass is performed on the file, and failure is checked */
+        pass1_status = firstPass(file);
+        if (!pass1_status) {
+            printf("ERROR: First pass of %s failed.\n", file);
             free_list();
-            removeOutputs(fileName);
+            removeOutputs(file);
             continue;
         }
 
-        /* Run the second pass on the file and check for failure */
-        second_pass = secondPass(fileName);
-        if (!second_pass) {
-            printf("ERROR: Second pass of %s failed.\n", fileName);
+        /* The second pass is performed on the file, and failure is checked */
+        pass2_status = secondPass(file);
+        if (!pass2_status) {
+            printf("ERROR: Second pass of %s failed.\n", file);
             free_list();
-            removeOutputs(fileName);
+            removeOutputs(file);
             continue;
         }
 
         free_list();
 
-        /* Print the object file */
-        printOBJ(fileName);
+        /* The object file is printed */
+        printOBJ(file);
     }
 
     return 0;
