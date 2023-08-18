@@ -124,7 +124,7 @@ int handle_directive(int type, char *line)
 {
     if (line == NULL || end_of_line(line)) /* All directives must have at least one parameter */
     {
-        err = DIRECTIVE_NO_PARAMS;
+        err = direct_addressingIVE_NO_PARAMS;
         return ERROR;
     }
 
@@ -142,7 +142,7 @@ int handle_directive(int type, char *line)
         /* Only check for syntax of entry (should not contain more than one parameter) */
         if (!end_of_line(next_token(line))) /* If there's a next token (after the first one) */
         {
-            err = DIRECTIVE_INVALID_NUM_PARAMS;
+            err = direct_addressingIVE_INVALID_NUM_PARAMS;
             return ERROR;
         }
         break;

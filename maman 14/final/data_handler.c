@@ -2,52 +2,52 @@
 #include "util.h"
 #include "prints.h"
 
-/* data handler is a data structre to store and manage the data image */
+/* The data_handler is utilized to store and control the image data */
 
-int D_COUNTER = 0;
-int DATA_IMG[MAX_DATA_SIZE] = {IMAGE_PH};
+int DATA_COUNT = 0;
+int DATA_IMAGE[MAX_DATA_SIZE] = {IMAGE_PH};
 
-bool add_data_num(char* str_num,int dc){
-    int num;
-    if (dc>MAX_DATA_SIZE){
-        fprintf(stderr, "Variable %s,unable to save,out of bounds exception\n", str_num);
+bool insert_number(char* input_num, int data_count){
+    int number;
+    if (data_count > MAX_DATA_SIZE){
+        fprintf(stderr, "Variable %s cannot be saved; out of bounds exception\n", input_num);
         return false;
     }
-    num = convert_to_int(str_num);
-    if (num == INT_MIN)
+    number = convert_to_int(input_num);
+    if (number == INT_MIN)
         return false;
-    /* if here everything is fine,save number and dc will be incremented in the function caller when true is returned */
-    DATA_IMG[dc] = num;
+    /* If code execution reaches here, everything is correct, and the number is saved. Data count will be incremented by the calling function if true is returned. */
+    DATA_IMAGE[data_count] = number;
     return true;
 }
 
-int add_data_string(char* string,int dc){
-    int i = 0;
-    if (string[0] != '\"' || string[strlen(string) -1] != '\"'){
-        fprintf(stderr, "ERROR: String variable %s,incorrect format,should start and end with \"\n", string);
+int insert_string(char* str, int data_count){
+    int index = 0;
+    if (str[0] != '\"' || str[strlen(str) - 1] != '\"'){
+        fprintf(stderr, "ERROR: String variable %s has an incorrect format; it must start and end with \"\n", str);
         return 0;
     }
-    for (string++; string[0] != '\"'; string++){
-        DATA_IMG[dc] = string[0];
-        dc++;
-        i++;
-        if (dc > MAX_DATA_SIZE){
-            fprintf(stderr, "ERROR: String variable %s,unable to save,out of bounds exception\n",string-dc);
+    for (str++; str[0] != '\"'; str++){
+        DATA_IMAGE[data_count] = str[0];
+        data_count++;
+        index++;
+        if (data_count > MAX_DATA_SIZE){
+            fprintf(stderr, "ERROR: String variable %s cannot be saved; out of bounds exception\n", str - data_count);
             return -1;
         }
     }
-    string[dc] = 0; /* null terminator in int base */
-    dc++;
-    i++;
-    return i; /* return the value of i to increment the original dc by that amount */
+    DATA_IMAGE[data_count] = 0; /* Insert null terminator in integer form */
+    data_count++;
+    index++;
+    return index; /* Return index's value to increment the original data_count by that amount */
 }
 
-int getDC()
+int retrieveDC()
 {
-    return D_COUNTER;
+    return DATA_COUNT;
 }
 
-void addDC(int counter)
+void updateDC(int count)
 {
-    D_COUNTER = counter;
+    DATA_COUNT = count;
 }
