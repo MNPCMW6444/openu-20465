@@ -51,52 +51,52 @@ bool secondPass(char* fileName)
             }
         } else {
             /* commands here */
-            if((current_cmd = find_cmd(token)) == NULL){
+            if((current_cmd = find_command(token)) == NULL){
                 fprintf(stderr, "Line %d bad command,unable to process %s",current_line,token);
                 success_flag = false;
                 continue;
             }
-            find_parameters(&first_param, &second_param);
+            extract_params(&first_param, &second_param);
 
             ic++; /* since already added memory word in first pass */
             switch (current_cmd -> num_of_operands){
 
                 case 0:
-                    if (first_param.address != no_addresing){
+                    if (first_param.address != no_addressing){
                         fprintf(stderr, "Line %d cmd %s shouldnt receive parameters",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
                     break;
                 
                 case 1:
-                    if (first_param.address == no_addresing || second_param.address != no_addresing){
+                    if (first_param.address == no_addressing || second_param.address != no_addressing){
                         fprintf(stderr, "Line %d cmd %s should receive 1 parameter",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
                     /* handling direct access since have all the data now */
-                    if (first_param.address == direct)
+                    if (first_param.address == direct_addressing)
                         if (!add_extra_word_single_param(first_param,false,ic,fileName))
                             success_flag = false;
-                        ic++;
+                    ic++;
                     break;
 
                 case 2:
-                    if (first_param.address == no_addresing || second_param.address == no_addresing){
+                    if (first_param.address == no_addressing || second_param.address == no_addressing){
                         fprintf(stderr, "Line %d cmd %s should receive 2 parameter",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
                     /* when both addressing types are register they share a single word */
-                    if (first_param.address == register_addr && second_param.address == register_addr){
+                    if (first_param.address == register_addressing && second_param.address == register_addressing){
                         ic++;
                         continue;
 
                     } else { /* meaning 1 of the addressing type is not register addressing */
-                        if (first_param.address != adders_error && second_param.address != adders_error){
-                            if (first_param.address == direct)
+                        if (first_param.address != addr_error && second_param.address != addr_error){
+                            if (first_param.address == direct_addressing)
                                 if (!add_extra_word_single_param(first_param,false,ic,fileName))
                                     success_flag = false;
                             ic++;
-                            if (second_param.address == direct)
+                            if (second_param.address == direct_addressing)
                                 if (!add_extra_word_single_param(second_param,false,ic,fileName))
                                     success_flag = false;
                             ic++;

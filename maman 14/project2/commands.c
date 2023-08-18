@@ -38,7 +38,7 @@ bool appendExtraWordSingleParam(parameter p, bool isSrc, int IC) {
     int num;
     symbol_data *sym;
 
-    if (p.address == register_addr) {
+    if (p.address == register_addressing) {
         num = p.param_name[2] - '0';
         CODE_IMG[loc] = isSrc ? num << 7 : num << 2;
     } else if (p.address == immediate) {
@@ -52,7 +52,7 @@ bool appendExtraWordSingleParam(parameter p, bool isSrc, int IC) {
             return false;
         }
         CODE_IMG[loc] = num << 2;
-    } else if (p.address == direct) {
+    } else if (p.address == direct_addressing) {
         if (!(sym = find_symbol(p.param_name))) {
             fprintf(stderr, "Line %d: Label %s not found.", current_line, p.param_name);
             return false;
