@@ -6,7 +6,6 @@ MAXIMUM: .data 0
 .extern Display
 MAIN:    mov NUMBERS, @r2
          mov @r2, @r1   ; Initialize r1 with the first number
-; Initialize loop variables
          mov 4, @r3
 LOOPMAX: cmp @r1, @r2
          blt UPDATE
@@ -16,9 +15,7 @@ LOOPMAX: cmp @r1, @r2
          jmp CONTINUE
 UPDATE:  mov @r2, @r1
          jmp LOOPMAX
-CONTINUE:
-; Store the maximum value into MAXIMUM
-         mov @r1, @r0
+CONTINUE: mov @r1, @r0
 ; Display the maximum value
          prn @r1
          jmp END
