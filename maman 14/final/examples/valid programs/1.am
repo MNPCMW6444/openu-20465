@@ -1,0 +1,17 @@
+MS2: .string "New program"
+VALUES: .data 5 , 7 , 12 , -3
+SUM: .data 0
+.extern PrintVal
+MAIN: mov SUM , @r0
+clr @r1
+mov VALUES , @r2
+mov 4 , @r3
+LOOP: add @r2 , @r1
+inc @r2
+dec @r3
+bne LOOP
+mov @r1 , @r0
+prn @r1
+jmp END
+.entry MAIN
+END: stop
