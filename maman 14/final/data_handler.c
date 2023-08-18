@@ -2,7 +2,7 @@
 #include "util.h"
 #include "prints.h"
 
-/* data handler is a data structre to store and manage the data image */
+/* The data handler acts as a structure to hold and manage the image data. */
 
 int D_COUNTER = 0;
 int DATA_IMG[MEM_SIZE] = {IMAGE};
@@ -16,7 +16,7 @@ bool add_data_num(char* str_num,int data_counter){
     num = convert_to_int(str_num);
     if (num == INT_MIN)
         return false;
-    /* if here everything is fine,save number and data_counter will be incremented in the function caller when true is returned */
+    /* Successful till here. Save the number. Incrementing of data_counter is handled by the calling function on successful return. */
     DATA_IMG[data_counter] = num;
     return true;
 }
@@ -28,12 +28,12 @@ int add_data_string(char* string,int data_counter){
         return 0;
     }
     for (string++; string[0] != '\"'; string++){
-        DATA_IMG[data_counter] = string[0];
+        DATA_IMG[data_counter] = string[0]; /* Representing null-terminator in integer form. */
         data_counter++;
         i++;
         if (data_counter > MEM_SIZE){
             fprintf(stderr, "ERROR: String variable %s, unable to save, out of bounds exception\n",string-data_counter);
-            return -1;
+            return i; /* Return i to adjust the original data_counter accordingly. */
         }
     }
     string[data_counter] = 0; /* null terminator in int base */

@@ -4,11 +4,13 @@
 #include "globals.h"
 #include "prints.h"
 
-/* commands is a data structre to store and manage the code image */
+/* Represents the image of the code in a command structure. */
 
 int INSTRUCTIONS_COUNTER = 0;
 int CODE_IMAGE[MEM_SIZE] ={IMAGE};
 
+
+/* Fetch the appropriate command from the command table. */
 cmd command_table[NUMBER_OF_COMMANDS] = {
     {"mov", mov, 2},
     {"cmp", cmp, 2},
@@ -32,12 +34,12 @@ cmd* find_command(char* command_name){
     int i;
     for (i=0; i<NUMBER_OF_COMMANDS; i++){
         if (strcmp((command_table[i].command_name), command_name) == 0)
-            return &command_table[i]; /* if here then found the cmd */
+            return &command_table[i]; /* Return found command. */
     }
-    return NULL; /* return null if not found anything */
+    return NULL; /* No command found. */
 }
 
-/* adding a machine word as decimal representation of the binary word */
+/* Converts and assembles the given machine word into its decimal representation. */
 void assemble_machine_word(machine_word current_word, int inst_counter){
     int word_location = inst_counter + START_ADDRESS;
     int built_word = current_word.source; /* slot 11-9 */
@@ -47,7 +49,7 @@ void assemble_machine_word(machine_word current_word, int inst_counter){
     CODE_IMAGE[word_location] = built_word ;
 }
 
-/* since register adressing can be both source or dest need bool flag to know which bits to flag */
+/* Assemble machine word with a single parameter, accounting for addressing modes. */
 bool assemble_machine_word_with_single_param(parameter param, bool is_source, int inst_counter, char* file_name){
     int word_location = inst_counter + START_ADDRESS;
     int new_num;
@@ -82,7 +84,7 @@ bool assemble_machine_word_with_single_param(parameter param, bool is_source, in
     return true;
 }
 
-/* for when both the operans are registers and share the word */
+/* Handles the case when both operands are registers sharing a word. */
 void assemble_machine_word_with_double_param(char* source, char* dest, int inst_counter){
     int word_location = inst_counter + START_ADDRESS;
     /* since checked before that register name are legal, get the register number */
@@ -93,6 +95,7 @@ void assemble_machine_word_with_double_param(char* source, char* dest, int inst_
     CODE_IMAGE[word_location] = new_num;
 }
 
+/* Identify and categorize the parameters given for addressing. */
 void find_parameters(parameter* first_param, parameter* second_param){
     char* token;
     int new_num;
@@ -169,6 +172,7 @@ int getIC()
     return INSTRUCTIONS_COUNTER;
 }
 
+/* Set the instruction counter to the given value. */
 void updateIC(int counter)
 {
     INSTRUCTIONS_COUNTER = counter;
