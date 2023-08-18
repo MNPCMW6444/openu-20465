@@ -11,7 +11,7 @@ assembler: $(EXE_DEPS) $(GLOBAL_DEPS)
 assembler.o:  assembler.c $(GLOBAL_DEPS)
 	$(CC) -c assembler.c $(CFLAGS) -o $@
 
-pre_processor_func.o: pre_processor_func.c pre_processor_func.h $(GLOBAL_DEPS)
+pre_processor_func.o: pre_processor_func.c preprocessor.h $(GLOBAL_DEPS)
 	$(CC) -c pre_processor_func.c $(CFLAGS) -o $@
 
 first_pass.o: first_pass.c first_pass.h $(GLOBAL_DEPS)
