@@ -29,17 +29,17 @@ int main(int totalArgs, char* args[]) {
         preprocess_status = pre_processor_func(file);
         if (!preprocess_status) {
             printf("ERROR: Preprocessing of %s failed.\n", file);
-            free_list();
-            removeOutputs(file);
+            release_list();
+            clean_outputs(file);
             continue;
         }
 
         /* The first pass is performed on the file, and failure is checked */
-        pass1_status = firstPass(file);
+        pass1_status = do_first_pass(file);
         if (!pass1_status) {
             printf("ERROR: First pass of %s failed.\n", file);
-            free_list();
-            removeOutputs(file);
+            release_list();
+            clean_outputs(file);
             continue;
         }
 
@@ -47,15 +47,15 @@ int main(int totalArgs, char* args[]) {
         pass2_status = secondPass(file);
         if (!pass2_status) {
             printf("ERROR: Second pass of %s failed.\n", file);
-            free_list();
-            removeOutputs(file);
+            release_list();
+            clean_outputs(file);
             continue;
         }
 
-        free_list();
+        release_list();
 
         /* The object file is printed */
-        printOBJ(file);
+        print_object(file);
     }
 
     return 0;
