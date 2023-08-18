@@ -5,10 +5,10 @@ MAXIMUM: .data 0
 ; External and entry references (assuming needed)
 .extern Display
 MAIN:    mov NUMBERS, @r2
-         mov @r2, @r1   ; Initialize r1 with the first number
+         mov @r2, @r1
          mov 4, @r3
 LOOPMAX: cmp @r1, @r2
-         blt UPDATE
+         jmp UPDATE
          inc @r2
          dec @r3
          bne LOOPMAX
