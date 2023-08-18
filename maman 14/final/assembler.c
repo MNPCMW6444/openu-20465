@@ -1,6 +1,6 @@
 #include "util.h"
 #include "globals.h"
-#include "preprocessor.h"
+#include "pre_processor_func.h"
 #include "commands.h"
 #include "data_handler.h"
 #include "first_pass.h"
@@ -26,7 +26,7 @@ int main(int totalArgs, char* args[]) {
         file = args[index];
 
         /* The file is preprocessed, and failure is checked */
-        preprocess_status = preprocessor(file);
+        preprocess_status = pre_processor_func(file);
         if (!preprocess_status) {
             printf("ERROR: Preprocessing of %s failed.\n", file);
             free_list();

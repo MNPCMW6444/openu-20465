@@ -4,7 +4,7 @@
 
 symbol_list* symbol_list_instance = NULL;
 
-void gen_new_symbol_list() {
+void create_new_symbol_list() {
     symbol_list_instance = (symbol_list*)malloc(sizeof(symbol_list));
     if (symbol_list_instance != NULL) {
         symbol_list_instance->head = NULL;
