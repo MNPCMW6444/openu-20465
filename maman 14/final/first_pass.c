@@ -10,7 +10,7 @@
 bool do_first_pass(char* file_name){
     int instructions_counter = 0,data_counter = 0, current_line = 0,data_counter_incerement;
     char line[MAX_LINE_LEN + 3] = "", tmp_line_for_display[MAX_LINE_LEN + 3];
-    char *token, *file_name_extended = str_allocate_cat(file_name, am_extension);
+    char *token, *file_name_extended = str_allocate_cat(file_name, amext);
     bool success_flag = true, has_label;
     FILE* working_file;
     char symbol_name[SYMBOL_MAX_NAME_SIZE+1];

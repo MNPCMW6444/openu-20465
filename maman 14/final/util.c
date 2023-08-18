@@ -3,11 +3,11 @@
 
 /* util bundles functions that are widely used in the assembler process */
 
-char* am_extension = ".am";
-char* as_extension = ".as";
-char* entry_extension = ".ent";
-char* external_extension = ".ext";
-char* object_extension = ".ob";
+char* amext = ".am";
+char* externalext = ".ext";
+char* asext = ".as";
+char* objectext = ".ob";
+char* entryext = ".ent";
 
 const char* saved_word_strings[] =
 {

@@ -14,8 +14,8 @@ bool pre_processor_func (char* file_name)
     char line[MAX_LINE_LEN + 3];
     macroTable* macro_table = NULL;
     macroItem* macro_item = NULL;
-    char* source_file_name = str_allocate_cat(file_name, as_extension);
-    char* output_file_name = str_allocate_cat(file_name, am_extension);
+    char* source_file_name = str_allocate_cat(file_name, asext);
+    char* output_file_name = str_allocate_cat(file_name, amext);
 
     /* add .as  and .am extension and open source and output file */
     FILE* source_file = fopen(source_file_name, "r");

@@ -9,7 +9,7 @@
 
 void write_entry_file (symbol_type symbol, char* file_name)
 {
-    char* file_name_to_open = str_allocate_cat(file_name, entry_extension);
+    char* file_name_to_open = str_allocate_cat(file_name, entryext);
     FILE* file = fopen(file_name_to_open, "a");
     if (file == NULL)
     {
@@ -26,7 +26,7 @@ void write_entry_file (symbol_type symbol, char* file_name)
 
 void write_external_file (char* symbol_name,int word_location, char* file_name)
 {
-    char* file_name_to_open = str_allocate_cat(file_name, external_extension);
+    char* file_name_to_open = str_allocate_cat(file_name, externalext);
     FILE* file = fopen(file_name_to_open, "a");
     if (file == NULL)
     {
@@ -60,7 +60,7 @@ void print_object(char* file_name)
     int inst_counter = getIC();
     int DC = getDC();
     char* b64;
-    char* object_file_name = str_allocate_cat(file_name, object_extension);
+    char* object_file_name = str_allocate_cat(file_name, objectext);
     FILE* file = fopen (object_file_name, "w");
 
     if (file == NULL)
@@ -89,9 +89,9 @@ void print_object(char* file_name)
 void clean_outputs(char* file_name)
 {
     FILE* file = NULL;
-    char* am_file = str_allocate_cat(file_name, am_extension);
-    char* entry_file = str_allocate_cat(file_name, entry_extension);
-    char* extern_file = str_allocate_cat(file_name, external_extension);
+    char* am_file = str_allocate_cat(file_name, amext);
+    char* entry_file = str_allocate_cat(file_name, entryext);
+    char* extern_file = str_allocate_cat(file_name, externalext);
     if ((file = fopen(am_file, "r")) != NULL)
         remove(am_file);
     free(am_file);

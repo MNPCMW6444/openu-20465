@@ -10,7 +10,7 @@
 bool secondPass(char* file_name)
 {
 	char line[MAX_LINE_LEN + 3];
-	char* token = NULL, *file_nameExtended = str_allocate_cat (file_name, am_extension);
+	char* token = NULL, *file_nameExtended = str_allocate_cat (file_name, amext);
 	bool success_flag = true;
 	int instructions_counter = 0, current_line = 0;
 	symbol_data* symbol = NULL;

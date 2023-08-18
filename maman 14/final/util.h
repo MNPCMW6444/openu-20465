@@ -3,11 +3,11 @@
 
 #include "globals.h"
 
-char* am_extension;
-char* as_extension;
-char* entry_extension;
-char* external_extension;
-char* object_extension;
+char* amext;
+char* asext;
+char* entryext;
+char* externalext;
+char* objectext;
 
 bool lineToIgnore(char* line);
 
