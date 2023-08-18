@@ -4,7 +4,6 @@
 #include "globals.h"
 #include "prints.h"
 
-/*TODO out of array boundries check (over 1024)*/
 /* commands is a data structre to store and manage the code image */
 
 int INSTRUCTIONS_COUNTER = 0;
@@ -66,7 +65,6 @@ bool assemble_machine_word_with_single_param(parameter param, bool is_source, in
         new_num<<=2; /* make room for 00 */
         CODE_IMAGE[word_location] = new_num;
     } else if (param.address == drct_addr) {
-        /* TODO: need to handle in second pass */
         if((symbol = find_symbol(param.param_name)) == NULL){
             fprintf(stderr, "ERROR in %s:Unable to find label %s assemble_machine_word_with_single_param\n", file_name, param.param_name);
             return false;
