@@ -54,7 +54,7 @@ char* convertToBase64(uint16_t binaryData)
     return base64String;
 }
 
-void _objectOBJ(char* file_name)
+void print_object(char* file_name)
 {
     int i;
     int inst_counter = getIC();
