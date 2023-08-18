@@ -7,25 +7,25 @@ SUM:     .data 0
 .extern PrintVal
 
 MAIN:
-        mov SUM, @r0   ; Load the address of SUM into register r0
-        clr @r1        ; Clear register r1 to store our running total
+        mov SUM, @r0   
+        clr @r1        
         
         ; Initialize loop variables
-        mov VALUES, @r2    ; Load the address of VALUES into register r2
-        mov 4, @r3         ; We have 4 values in the VALUES segment
+        mov VALUES, @r2    
+        mov 4, @r3         
 
 LOOP:
-        add @r2, @r1       ; Add value pointed by r2 to r1
-        inc @r2            ; Move to the next value
-        dec @r3            ; Decrease the count of remaining values
-        bne LOOP           ; If we haven't processed all values, loop again
+        add @r2, @r1       
+        inc @r2            
+        dec @r3            
+        bne LOOP           
 
         ; Store the sum into SUM
         mov @r1, @r0
 
         ; (Assuming there's a function called PrintVal that can print an integer value)
-        prn @r1            ; Print the sum
-        jmp END            ; Jump to the end of the program
+        prn @r1            
+        jmp END            
 
 .entry MAIN
 
