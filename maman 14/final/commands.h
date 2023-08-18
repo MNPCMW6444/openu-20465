@@ -12,7 +12,7 @@ cmd* find_cmd(char*);
 
 void add_machine_word(machine_word current_word, int IC);
 
-bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* fileName);
+bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* file_name);
 
 void add_extra_word_double_param(char* source, char* dest, int IC);
 

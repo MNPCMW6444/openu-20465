@@ -7,10 +7,10 @@
 /* second_pass gets file name and reads through the .am file to update and finish the code image of it.
    if no errors found it returns true, else return false. */
 
-bool secondPass(char* fileName)
+bool secondPass(char* file_name)
 {
 	char line[MAX_LINE_LEN + 3];
-	char* token = NULL, *fileNameExtended = str_allocate_cat (fileName, am_extension);
+	char* token = NULL, *file_nameExtended = str_allocate_cat (file_name, am_extension);
 	bool success_flag = true;
 	int ic = 0, current_line = 0;
 	symbol_data* symbol = NULL;
@@ -18,10 +18,10 @@ bool secondPass(char* fileName)
     cmd* current_cmd;
     FILE* file;
 
-    if((file = fopen(fileNameExtended, "r")) == NULL)
+    if((file = fopen(file_nameExtended, "r")) == NULL)
     {
-        printf("Failed to open file %s\n",fileName);
-        free(fileNameExtended);
+        printf("Failed to open file %s\n",file_name);
+        free(file_nameExtended);
         return false; /* nothing to continue with */
     }
 
@@ -45,7 +45,7 @@ bool secondPass(char* fileName)
                         fprintf(stderr, "Line %d external label cannot be used in .entry",current_line);
                         success_flag = false;
                     } else {
-                        write_entry_file(symbol->symbol, fileName);
+                        write_entry_file(symbol->symbol, file_name);
                     }
                 } 
             }
@@ -75,7 +75,7 @@ bool secondPass(char* fileName)
                     }
                     /* handling direct access since have all the data now */
                     if (first_param.address == direct)
-                        if (!add_extra_word_single_param(first_param,false,ic,fileName))
+                        if (!add_extra_word_single_param(first_param,false,ic,file_name))
                             success_flag = false;
                         ic++;
                     break;
@@ -93,11 +93,11 @@ bool secondPass(char* fileName)
                     } else { /* meaning 1 of the addressing type is not register addressing */
                         if (first_param.address != adders_error && second_param.address != adders_error){
                             if (first_param.address == direct)
-                                if (!add_extra_word_single_param(first_param,false,ic,fileName))
+                                if (!add_extra_word_single_param(first_param,false,ic,file_name))
                                     success_flag = false;
                             ic++;
                             if (second_param.address == direct)
-                                if (!add_extra_word_single_param(second_param,false,ic,fileName))
+                                if (!add_extra_word_single_param(second_param,false,ic,file_name))
                                     success_flag = false;
                             ic++;
                         }
@@ -111,7 +111,7 @@ bool secondPass(char* fileName)
             }
         }
 	}
-    free(fileNameExtended);
+    free(file_nameExtended);
     fclose(file);
 
     return success_flag;

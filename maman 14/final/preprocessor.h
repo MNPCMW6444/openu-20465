@@ -5,6 +5,6 @@
 #include "macro_table.h"
 #include "globals.h"
 
-bool preprocessor(char* fileName);
+bool preprocessor(char* file_name);
 
 #endif

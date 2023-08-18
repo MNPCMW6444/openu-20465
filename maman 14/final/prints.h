@@ -4,12 +4,12 @@
 #include "globals.h"
 #include "symbol_table.h"
 
-void write_entry_file (symbol_type symbol, char* fileName);
+void write_entry_file (symbol_type symbol, char* file_name);
 
-void write_external_file (char* symbol_name,int word_location, char* fileName);
+void write_external_file (char* symbol_name,int word_location, char* file_name);
 
-void printOBJ(char* file_name);
+void _objectOBJ(char* file_name);
 
-void removeOutputs(char* fileName);
+void clean_outputs(char* file_name);
 
 #endif

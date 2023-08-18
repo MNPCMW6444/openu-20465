@@ -9,46 +9,46 @@
 #include "prints.h"
 
 /* assembler gets file names through terminal and proccess them one at a time, assuming file name given with no extension */
-int main (int argc, char* argv[])
+int main (int totalArgs, char* argv[])
 {
     int i;
-    char* fileName; /* the file name as given as argument */
+    char* file_name; /* the file name as given as argument */
     bool pre_proccesor, first_pass, second_pass;
 
-	if (argc < 2)
+	if (totalArgs < 2)
 	{
 		printf("Usage: %s <filename> <filename> ...\n", argv[0]);
 	}
 	 /* Processing each file name argument */
     
-    for (i = 1; i < argc; i++) 
+    for (i = 1; i < totalArgs; i++) 
     {   
-        create_new_symbol_list();
-        fileName = argv[i];
-        if ((pre_proccesor = preprocessor(fileName)) == false)
+        gen_new_symbol_list();
+        file_name = argv[i];
+        if ((pre_proccesor = preprocessor(file_name)) == false)
         {
-            printf("ERROR: pre preprocessor of %s failed.\n", fileName);
-            free_list();
-            removeOutputs(fileName);
+            printf("ERROR: pre preprocessor of %s failed.\n", file_name);
+            release_list();
+            clean_outputs(file_name);
             continue;
         }
-        if ((first_pass = firstPass(fileName)) == false)
+        if ((first_pass = firstPass(file_name)) == false)
         {
-            printf("ERROR: first pass of %s failed.\n", fileName);
-            free_list();
-            removeOutputs(fileName);
+            printf("ERROR: first pass of %s failed.\n", file_name);
+            release_list();
+            clean_outputs(file_name);
             continue;
         }
-        if ((second_pass = secondPass(fileName)) == false)
+        if ((second_pass = secondPass(file_name)) == false)
         {
-            printf("ERROR: second pass of %s failed.\n", fileName);
-            free_list();
-            removeOutputs(fileName);
+            printf("ERROR: second pass of %s failed.\n", file_name);
+            release_list();
+            clean_outputs(file_name);
             continue;
         }
-        free_list();
+        release_list();
 
-        printOBJ(fileName);
+        _objectOBJ(file_name);
     }
 
     return 0;

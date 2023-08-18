@@ -49,7 +49,7 @@ void add_machine_word(machine_word current_word, int IC){
 }
 
 /* since register adressing can be both source or dest need bool flag to know which bits to flag */
-bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* fileName){
+bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* file_name){
     int word_location = IC + START_ADDRESS;
     int new_num;
     symbol_data* symbol;
@@ -68,13 +68,13 @@ bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* 
     } else if (param.address == direct) {
         /* TODO: need to handle in second pass */
         if((symbol = find_symbol(param.param_name)) == NULL){
-            fprintf(stderr, "ERROR in %s:Unable to find label %s add_extra_word_single_param\n", fileName, param.param_name);
+            fprintf(stderr, "ERROR in %s:Unable to find label %s add_extra_word_single_param\n", file_name, param.param_name);
             return false;
         }
         new_num = symbol->symbol.value;
         if (symbol->symbol.attribute == SYMBOL_EXTERN){
             new_num= (new_num <<2) + external; /* if external then add const for 01 bits in 1-0 location */
-            write_external_file(symbol->symbol.name, word_location, fileName);
+            write_external_file(symbol->symbol.name, word_location, file_name);
         } else {
             /* if not external then label needs reloaction so add the const for 10 bits in 1-0 location */
             new_num= (new_num <<2) + realocatable;

@@ -4,7 +4,7 @@
 
 symbol_list* symbol_list_instance = NULL;
 
-void create_new_symbol_list() {
+void gen_new_symbol_list() {
     symbol_list_instance = (symbol_list*)malloc(sizeof(symbol_list));
     if (symbol_list_instance != NULL) {
         symbol_list_instance->head = NULL;
@@ -84,7 +84,7 @@ bool does_symbol_exist(symbol_data* data) {
     return false;  /* Symbol does not exist in the list */
 }
 
-void free_list() {
+void release_list() {
     symbol_data* current;
     symbol_data* temp;
     if (symbol_list_instance == NULL) {

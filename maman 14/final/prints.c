@@ -7,9 +7,9 @@
 
 /* prints bundles the printing to files functions */
 
-void write_entry_file (symbol_type symbol, char* fileName)
+void write_entry_file (symbol_type symbol, char* file_name)
 {
-    char* file_name_to_open = str_allocate_cat(fileName, entry_extension);
+    char* file_name_to_open = str_allocate_cat(file_name, entry_extension);
     FILE* file = fopen(file_name_to_open, "a");
     if (file == NULL)
     {
@@ -24,9 +24,9 @@ void write_entry_file (symbol_type symbol, char* fileName)
     free(file_name_to_open);
 }
 
-void write_external_file (char* symbol_name,int word_location, char* fileName)
+void write_external_file (char* symbol_name,int word_location, char* file_name)
 {
-    char* file_name_to_open = str_allocate_cat(fileName, external_extension);
+    char* file_name_to_open = str_allocate_cat(file_name, external_extension);
     FILE* file = fopen(file_name_to_open, "a");
     if (file == NULL)
     {
@@ -54,7 +54,7 @@ char* convertToBase64(uint16_t binaryData)
     return base64String;
 }
 
-void printOBJ(char* file_name)
+void _objectOBJ(char* file_name)
 {
     int i;
     int IC = getIC();
@@ -86,12 +86,12 @@ void printOBJ(char* file_name)
 }
 
 /* in case of failure at any stage - remove .ext and .ent as instructed. check if files exist first. */
-void removeOutputs(char* fileName)
+void clean_outputs(char* file_name)
 {
     FILE* file = NULL;
-    char* am_file = str_allocate_cat(fileName, am_extension);
-    char* entry_file = str_allocate_cat(fileName, entry_extension);
-    char* extern_file = str_allocate_cat(fileName, external_extension);
+    char* am_file = str_allocate_cat(file_name, am_extension);
+    char* entry_file = str_allocate_cat(file_name, entry_extension);
+    char* extern_file = str_allocate_cat(file_name, external_extension);
     if ((file = fopen(am_file, "r")) != NULL)
         remove(am_file);
     free(am_file);

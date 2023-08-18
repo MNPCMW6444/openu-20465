@@ -21,7 +21,7 @@ typedef struct symbol_list_type {
     struct symbol_data_type* head;
 } symbol_list;
 
-void create_new_symbol_list();
+void gen_new_symbol_list();
 
 symbol_data* create_new_symbol_data(char[], int, symbol_attribute);
 
@@ -31,5 +31,5 @@ symbol_data* find_symbol(char[]);
 
 bool does_symbol_exist(symbol_data*);
 
-void free_list();
+void release_list();
 #endif

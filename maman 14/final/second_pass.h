@@ -6,6 +6,6 @@
 #include "symbol_table.h"
 #include "util.h"
 
-bool secondPass(char* fileName);
+bool secondPass(char* file_name);
 
 #endif
