@@ -8,47 +8,54 @@
 #include "symbol_table.h"
 #include "prints.h"
 
-/* assembler gets file names through terminal and proccess them one at a time, assuming file name given with no extension */
-int main (int totalArgs, char* argv[])
-{
-    int i;
-    char* file_name; /* the file name as given as argument */
-    bool pre_proccesor, first_pass, second_pass;
+/* The main function takes filenames from command-line arguments and processes each of them individually.
+   The filenames should be given without extensions. */
+int main(int totalArgs, char* args[]) {
+    int index;
+    char* file; /* File name given as a command-line argument */
+    bool preprocess_status, pass1_status, pass2_status;
 
-	if (totalArgs < 2)
-	{
-		printf("Usage: %s <filename> <filename> ...\n", argv[0]);
-	}
-	 /* Processing each file name argument */
-    
-    for (i = 1; i < totalArgs; i++) 
-    {   
-        gen_new_symbol_list();
-        file_name = argv[i];
-        if ((pre_proccesor = pre_processor_func(file_name)) == false)
-        {
-            printf("ERROR: pre pre_processor_func of %s failed.\n", file_name);
-            release_list();
-            clean_outputs(file_name);
-            continue;
-        }
-        if ((first_pass = do_first_pass(file_name)) == false)
-        {
-            printf("ERROR: first pass of %s failed.\n", file_name);
-            release_list();
-            clean_outputs(file_name);
-            continue;
-        }
-        if ((second_pass = secondPass(file_name)) == false)
-        {
-            printf("ERROR: second pass of %s failed.\n", file_name);
-            release_list();
-            clean_outputs(file_name);
-            continue;
-        }
-        release_list();
+    if (totalArgs < 2) {
+        printf("Usage: %s <filename> <filename> ...\n", args[0]);
+        return 1; /* An error code is returned if the arguments are insufficient */
+    }
 
-        _objectOBJ(file_name);
+    /* Each filename given is processed in this loop */
+    for (index = 1; index < totalArgs; index++) {
+        create_new_symbol_list();
+        file = args[index];
+
+        /* The file is preprocessed, and failure is checked */
+        preprocess_status = preprocessor(file);
+        if (!preprocess_status) {
+            printf("ERROR: Preprocessing of %s failed.\n", file);
+            free_list();
+            removeOutputs(file);
+            continue;
+        }
+
+        /* The first pass is performed on the file, and failure is checked */
+        pass1_status = firstPass(file);
+        if (!pass1_status) {
+            printf("ERROR: First pass of %s failed.\n", file);
+            free_list();
+            removeOutputs(file);
+            continue;
+        }
+
+        /* The second pass is performed on the file, and failure is checked */
+        pass2_status = secondPass(file);
+        if (!pass2_status) {
+            printf("ERROR: Second pass of %s failed.\n", file);
+            free_list();
+            removeOutputs(file);
+            continue;
+        }
+
+        free_list();
+
+        /* The object file is printed */
+        printOBJ(file);
     }
 
     return 0;
