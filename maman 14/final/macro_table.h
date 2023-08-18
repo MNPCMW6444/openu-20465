@@ -8,7 +8,7 @@
 typedef struct Ht_item
 {
     char* key;              /* The macro name */
-    unsigned long hashValue; /* The hash value */
+    unsigned long hash_value; /* The hash value */
     char* text;             /* The macro content */
 } macroItem;
 
@@ -22,7 +22,7 @@ typedef struct HashTable
 } macroTable;
 
 /* Creates a macro item */
-macroItem* createMacro(const char* key, const char* text);
+macroItem* create_macro(const char* key, const char* text);
 
 /* Creates a macro table */
 macroTable* createMacroTable(int size);
@@ -31,10 +31,10 @@ macroTable* createMacroTable(int size);
 void freeMacroTable(macroTable* table);
 
 /* Searches for a macro item in the table */
-bool searchMacro(macroTable* table, char* macroName);
+bool searchMacro(macroTable* table, char* macro_name);
 
 /* return a pointer to an existing macro item */
-macroItem* getMacro(macroTable* table, char* macroName);
+macroItem* getMacro(macroTable* table, char* macro_name);
 
 /* Inserts an item into the table */
 void insertMacro(macroTable* table, macroItem* newItem);

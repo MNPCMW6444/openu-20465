@@ -2,7 +2,7 @@
  CC = gcc
  CFLAGS = -Wall -ansi -pedantic # Flags
  GLOBAL_DEPS = globals.h # Dependencies for everything
- EXE_DEPS = assembler.o util.o macro_table.o preprocessor.o commands.o data_handler.o symbol_table.o first_pass.o second_pass.o prints.o # Deps for exe
+ EXE_DEPS = assembler.o util.o macro_table.o pre_processor_func.o commands.o data_handler.o symbol_table.o first_pass.o second_pass.o prints.o # Deps for exe
  
  ## Executable
 assembler: $(EXE_DEPS) $(GLOBAL_DEPS)
@@ -11,8 +11,8 @@ assembler: $(EXE_DEPS) $(GLOBAL_DEPS)
 assembler.o:  assembler.c $(GLOBAL_DEPS)
 	$(CC) -c assembler.c $(CFLAGS) -o $@
 
-preprocessor.o: preprocessor.c preprocessor.h $(GLOBAL_DEPS)
-	$(CC) -c preprocessor.c $(CFLAGS) -o $@
+pre_processor_func.o: pre_processor_func.c pre_processor_func.h $(GLOBAL_DEPS)
+	$(CC) -c pre_processor_func.c $(CFLAGS) -o $@
 
 first_pass.o: first_pass.c first_pass.h $(GLOBAL_DEPS)
 	$(CC) -c first_pass.c $(CFLAGS) -o $@

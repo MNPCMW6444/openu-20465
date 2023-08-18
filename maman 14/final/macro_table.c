@@ -8,18 +8,18 @@
 /*macro_table is a hash table for macros management */
 
 /*hash function for macro table*/
-unsigned long macroHash(int size, char* macroName, unsigned long hash)
+unsigned long macro_hashfunc(int size, char* macro_name, unsigned long hash)
 {
 	int i;
-	for (i = 0; (macroName[i]) != '\0'; i++)
+	for (i = 0; (macro_name[i]) != '\0'; i++)
 	{
-		hash = (hash * 31 + macroName[i]) % size;
+		hash = (hash * 31 + macro_name[i]) % size;
 	}
 	return hash;
 }
 
 /*create macro item*/
-macroItem* createMacro(const char* key, const char* text)
+macroItem* create_macro(const char* key, const char* text)
 {
 	macroItem* item = (macroItem*)malloc(sizeof(macroItem));
 	if (item == NULL)
@@ -33,7 +33,7 @@ macroItem* createMacro(const char* key, const char* text)
 		printf("Memory allocation failed for new macro key. \n");
 		exit(0);
 	}
-	item->hashValue = 0;
+	item->hash_value = 0;
 	item->text = (char*)malloc(strlen(text) + 1);
 	if (item->text == NULL)
 	{
@@ -98,41 +98,41 @@ void freeMacroTable(macroTable* table)
 }
 
 /*search macro item in table*/
-bool searchMacro(macroTable* table, char* macroName)
+bool searchMacro(macroTable* table, char* macro_name)
 {
-	unsigned long index = macroHash(table->size, macroName, 0);
+	unsigned long index = macro_hashfunc(table->size, macro_name, 0);
 	int probsCount = 0; /* to compare to max prob of the table */
 	macroItem* item = table->items[index];
 
 	while (item)
 	{
 		printf("item isnt null\n");/*tester remove*/
-		if (strcmp(item->key, macroName) == 0)
+		if (strcmp(item->key, macro_name) == 0)
 			return true;
 		if (probsCount == table->maxProbs)
 			return false;
 		probsCount++;
-		index = macroHash(table->size, macroName, index);
+		index = macro_hashfunc(table->size, macro_name, index);
 		item = table->items[index];
 	}
 	return false;
 }
 
 /*return pointer to existing macro*/
-macroItem* getMacro(macroTable* table, char* macroName)
+macroItem* getMacro(macroTable* table, char* macro_name)
 {
-	unsigned long index = macroHash(table->size, macroName, 0);
+	unsigned long index = macro_hashfunc(table->size, macro_name, 0);
 	int probsCount = 0; /* to compare to max prob of the table */
 	macroItem* item = table->items[index];
 
 	while (item != NULL)
 	{
-		if (strcmp(item->key, macroName) == 0)
+		if (strcmp(item->key, macro_name) == 0)
 			return item;
 		if (probsCount == table->maxProbs)
 			return NULL;
 		probsCount++;
-		index = macroHash(table->size, macroName, index);
+		index = macro_hashfunc(table->size, macro_name, index);
 		item = table->items[index];
 	}
 	return NULL;
@@ -143,18 +143,18 @@ void insertMacro(macroTable* table, macroItem* newItem)
 {
 	if (!searchMacro(table, newItem->key))
 	{
-		unsigned long index = macroHash(table->size, newItem->key, newItem->hashValue);
+		unsigned long index = macro_hashfunc(table->size, newItem->key, newItem->hash_value);
 		macroItem* ptr = table->items[index];
 		int probsCount = 1; /* counting how many hashes it takes to insert, for more efficient searches later */
 
 		while (ptr != NULL)
 		{
-			index = macroHash(table->size, newItem->key, index); /*re-hash*/
+			index = macro_hashfunc(table->size, newItem->key, index); /*re-hash*/
 			ptr = table->items[index];
 			probsCount++;
 		}
 
-		newItem->hashValue = index;
+		newItem->hash_value = index;
 		table->items[index] = newItem;
 		if (table->maxProbs < probsCount)
 			table->maxProbs = probsCount;

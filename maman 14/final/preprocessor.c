@@ -2,11 +2,11 @@
 #include "macro_table.h"
 #include "globals.h"
 
-/* preprocessor gets a file name, read through the .as file and creates a formated .am file
+/* pre_processor_func gets a file name, read through the .as file and creates a formated .am file
    if macros a initialized it will create a macro table to store them and later unfolds it into the .am file
    if no errors found it returns true, else false*/
 
-bool preprocessor (char* file_name)
+bool pre_processor_func (char* file_name)
 {
     bool success_flag = true, open_macro = false, add_macro = false, skip = true, first_word = true;
     int counter = 0, macro_length = 0, name_length = 0, current_line = 1, temp = 0;
@@ -22,7 +22,7 @@ bool preprocessor (char* file_name)
     FILE* output_file = fopen(output_file_name, "w");
     if (source_file == NULL)
     {
-        printf("Failed to open source file: %s in preprocessor stage.\n", source_file_name);
+        printf("Failed to open source file: %s in pre_processor_func stage.\n", source_file_name);
         success_flag = false;
         free(source_file_name);
         free(output_file_name);
@@ -127,7 +127,7 @@ bool preprocessor (char* file_name)
             /* endmcro: submit the contnet in and reset the string*/
             if ((strcmp(token, "endmcro") == 0) && counter > 0)
             {
-                macro_item = createMacro(macro_name, macro_content);
+                macro_item = create_macro(macro_name, macro_content);
                 insertMacro(macro_table, macro_item);
                 open_macro = false;
                 free(macro_name);

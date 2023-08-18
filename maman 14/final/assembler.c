@@ -1,6 +1,6 @@
 #include "util.h"
 #include "globals.h"
-#include "preprocessor.h"
+#include "pre_processor_func.h"
 #include "commands.h"
 #include "data_handler.h"
 #include "first_pass.h"
@@ -25,9 +25,9 @@ int main (int totalArgs, char* argv[])
     {   
         gen_new_symbol_list();
         file_name = argv[i];
-        if ((pre_proccesor = preprocessor(file_name)) == false)
+        if ((pre_proccesor = pre_processor_func(file_name)) == false)
         {
-            printf("ERROR: pre preprocessor of %s failed.\n", file_name);
+            printf("ERROR: pre pre_processor_func of %s failed.\n", file_name);
             release_list();
             clean_outputs(file_name);
             continue;
