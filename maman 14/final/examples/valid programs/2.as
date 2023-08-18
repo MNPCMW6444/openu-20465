@@ -9,7 +9,7 @@ MAIN:    mov PRODUCT, @r0
 ; Initialize loop variables
          mov MULTIPLIERS, @r2
          mov 4, @r3
-LOOPM:   mul @r2, @r1
+LOOPM:   muv @r2, @r1
          inc @r2
          dec @r3
          bne LOOPM
