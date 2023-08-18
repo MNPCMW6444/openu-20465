@@ -57,7 +57,7 @@ char* convertToBase64(uint16_t binaryData)
 void _objectOBJ(char* file_name)
 {
     int i;
-    int IC = getIC();
+    int inst_counter = getIC();
     int DC = getDC();
     char* b64;
     char* object_file_name = str_allocate_cat(file_name, object_extension);
@@ -70,10 +70,10 @@ void _objectOBJ(char* file_name)
         return;
     }
 
-    fprintf(file, "%d %d", IC, DC);
-    for (i = INITIAL_ADDRESS; i < INITIAL_ADDRESS + IC; i++)
+    fprintf(file, "%d %d", inst_counter, DC);
+    for (i = INITIAL_ADDRESS; i < INITIAL_ADDRESS + inst_counter; i++)
     {
-        b64 = convertToBase64(CODE_IMG[i]);
+        b64 = convertToBase64(CODE_IMAGE[i]);
         fprintf(file, "\n%s", b64);
     }
     for (i = 0; i < DC; i++)

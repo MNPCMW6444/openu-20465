@@ -5,7 +5,7 @@
 /* data handler is a data structre to store and manage the data image */
 
 int D_COUNTER = 0;
-int DATA_IMG[MAX_DATA_SIZE] = {IMAGE_PH};
+int DATA_IMG[MAX_DATA_SIZE] = {IMAGE};
 
 bool add_data_num(char* str_num,int dc){
     int num;

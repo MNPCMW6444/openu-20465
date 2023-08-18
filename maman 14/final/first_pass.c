@@ -148,7 +148,7 @@ bool firstPass(char* file_name){
                 }
             }
 
-            if((current_cmd = find_cmd(token)) == NULL){
+            if((current_cmd = find_command(token)) == NULL){
                 fprintf(stderr, "ERROR in %s: Line %d bad command,unable to process %s\n",file_name,current_line,token);
                 success_flag = false;
                 continue; /* continue to avoid NULL access violation */
@@ -163,7 +163,7 @@ bool firstPass(char* file_name){
                 current_machine_word.dest = second_param.address;
             }
 
-            add_machine_word(current_machine_word,ic);
+            assemble_machine_word(current_machine_word,ic);
             ic++;
             switch (current_cmd->num_of_operands){
             case 0:
@@ -180,7 +180,7 @@ bool firstPass(char* file_name){
                 }
                 /* direct addressing will be handled in second pass since not enough data currently */
                 if (first_param.address == register_addr || first_param.address == immediate)
-                    if (!add_extra_word_single_param(first_param,false,ic,file_name)){
+                    if (!assemble_machine_word_with_single_param(first_param,false,ic,file_name)){
                     printf("extra word case 1 fault\n");
                     success_flag = false;
                 }
@@ -194,18 +194,18 @@ bool firstPass(char* file_name){
                 }
                 /* when both addressing types are register they share a single word */
                 if (first_param.address == register_addr && second_param.address == register_addr){
-                    add_extra_word_double_param(first_param.param_name, second_param.param_name, ic);
+                    assemble_machine_word_with_double_param(first_param.param_name, second_param.param_name, ic);
                     ic++;
                 } else { /* meaning 1 of the addressing type is not register addressing */
                     if (first_param.address != adders_error && second_param.address != adders_error){
                         if (first_param.address == register_addr || first_param.address == immediate)
-                            if (!add_extra_word_single_param(first_param,true,ic,file_name)){
+                            if (!assemble_machine_word_with_single_param(first_param,true,ic,file_name)){
                     printf("extra word case 2 fault first param\n");
                     success_flag = false;
                 }
                         ic++;
                         if (second_param.address == register_addr || second_param.address == immediate)
-                            if (!add_extra_word_single_param(second_param,false,ic,file_name)){
+                            if (!assemble_machine_word_with_single_param(second_param,false,ic,file_name)){
                     printf("extra word case 1 2nd param\n");
                     success_flag = false;
                 }
@@ -223,7 +223,7 @@ bool firstPass(char* file_name){
 
     }
     fclose(working_file);
-    addIC(ic);
+    updateIC(ic);
     addDC(dc);
 
     return success_flag;

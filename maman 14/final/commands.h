@@ -3,23 +3,23 @@
 
 #include "globals.h"
 
-#define CMD_SUM 16
+#define NUMBER_OF_COMMANDS 16
 #define START_ADDRESS 100
 
-int CODE_IMG[MAX_DATA_SIZE];
+int CODE_IMAGE[MAX_DATA_SIZE];
 
-cmd* find_cmd(char*);
+cmd* find_command(char*);
 
-void add_machine_word(machine_word current_word, int IC);
+void assemble_machine_word(machine_word current_word, int inst_counter);
 
-bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* file_name);
+bool assemble_machine_word_with_single_param(parameter param, bool is_source, int inst_counter, char* file_name);
 
-void add_extra_word_double_param(char* source, char* dest, int IC);
+void assemble_machine_word_with_double_param(char* source, char* dest, int inst_counter);
 
 void find_parameters(parameter* first_param, parameter* second_param);
 
 int getIC();
 
-void addIC(int counter);
+void updateIC(int counter);
 
 #endif

@@ -51,7 +51,7 @@ bool secondPass(char* file_name)
             }
         } else {
             /* commands here */
-            if((current_cmd = find_cmd(token)) == NULL){
+            if((current_cmd = find_command(token)) == NULL){
                 fprintf(stderr, "Line %d bad command,unable to process %s",current_line,token);
                 success_flag = false;
                 continue;
@@ -75,7 +75,7 @@ bool secondPass(char* file_name)
                     }
                     /* handling direct access since have all the data now */
                     if (first_param.address == direct)
-                        if (!add_extra_word_single_param(first_param,false,ic,file_name))
+                        if (!assemble_machine_word_with_single_param(first_param,false,ic,file_name))
                             success_flag = false;
                         ic++;
                     break;
@@ -93,11 +93,11 @@ bool secondPass(char* file_name)
                     } else { /* meaning 1 of the addressing type is not register addressing */
                         if (first_param.address != adders_error && second_param.address != adders_error){
                             if (first_param.address == direct)
-                                if (!add_extra_word_single_param(first_param,false,ic,file_name))
+                                if (!assemble_machine_word_with_single_param(first_param,false,ic,file_name))
                                     success_flag = false;
                             ic++;
                             if (second_param.address == direct)
-                                if (!add_extra_word_single_param(second_param,false,ic,file_name))
+                                if (!assemble_machine_word_with_single_param(second_param,false,ic,file_name))
                                     success_flag = false;
                             ic++;
                         }
