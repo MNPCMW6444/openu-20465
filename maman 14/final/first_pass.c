@@ -34,7 +34,7 @@ bool do_first_pass(char* file_name){
         current_line++;
         format_line(line);
 
-        if (ic+START_ADDRESS>MAX_DATA_SIZE){
+        if (instructions_counter + START_ADDRESS > MAX_DATA_SIZE){
             fprintf(stderr, "ERROR: Line %d need more space then the allowed 1024 words\n",current_line);
             return false;
         }
