@@ -32,7 +32,7 @@ int main (int totalArgs, char* argv[])
             clean_outputs(file_name);
             continue;
         }
-        if ((first_pass = firstPass(file_name)) == false)
+        if ((first_pass = do_first_pass(file_name)) == false)
         {
             printf("ERROR: first pass of %s failed.\n", file_name);
             release_list();

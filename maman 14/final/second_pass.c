@@ -12,7 +12,7 @@ bool secondPass(char* file_name)
 	char line[MAX_LINE_LEN + 3];
 	char* token = NULL, *file_nameExtended = str_allocate_cat (file_name, am_extension);
 	bool success_flag = true;
-	int ic = 0, current_line = 0;
+	int instructions_counter = 0, current_line = 0;
 	symbol_data* symbol = NULL;
 	parameter first_param, second_param;
     cmd* current_cmd;
@@ -58,48 +58,48 @@ bool secondPass(char* file_name)
             }
             find_parameters(&first_param, &second_param);
 
-            ic++; /* since already added memory word in first pass */
+            instructions_counter++; /* since already added memory word in first pass */
             switch (current_cmd -> num_of_operands){
 
                 case 0:
-                    if (first_param.address != no_addresing){
+                    if (first_param.address != no_addr){
                         fprintf(stderr, "Line %d cmd %s shouldnt receive parameters",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
                     break;
                 
                 case 1:
-                    if (first_param.address == no_addresing || second_param.address != no_addresing){
+                    if (first_param.address == no_addr || second_param.address != no_addr){
                         fprintf(stderr, "Line %d cmd %s should receive 1 parameter",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
-                    /* handling direct access since have all the data now */
-                    if (first_param.address == direct)
-                        if (!assemble_machine_word_with_single_param(first_param,false,ic,file_name))
+                    /* handling drct_addr access since have all the data now */
+                    if (first_param.address == drct_addr)
+                        if (!assemble_machine_word_with_single_param(first_param,false,instructions_counter,file_name))
                             success_flag = false;
-                        ic++;
+                        instructions_counter++;
                     break;
 
                 case 2:
-                    if (first_param.address == no_addresing || second_param.address == no_addresing){
+                    if (first_param.address == no_addr || second_param.address == no_addr){
                         fprintf(stderr, "Line %d cmd %s should receive 2 parameter",current_line,current_cmd->command_name);
                         success_flag = false;
                     }
                     /* when both addressing types are register they share a single word */
-                    if (first_param.address == register_addr && second_param.address == register_addr){
-                        ic++;
+                    if (first_param.address == reg_addr && second_param.address == reg_addr){
+                        instructions_counter++;
                         continue;
 
                     } else { /* meaning 1 of the addressing type is not register addressing */
                         if (first_param.address != adders_error && second_param.address != adders_error){
-                            if (first_param.address == direct)
-                                if (!assemble_machine_word_with_single_param(first_param,false,ic,file_name))
+                            if (first_param.address == drct_addr)
+                                if (!assemble_machine_word_with_single_param(first_param,false,instructions_counter,file_name))
                                     success_flag = false;
-                            ic++;
-                            if (second_param.address == direct)
-                                if (!assemble_machine_word_with_single_param(second_param,false,ic,file_name))
+                            instructions_counter++;
+                            if (second_param.address == drct_addr)
+                                if (!assemble_machine_word_with_single_param(second_param,false,instructions_counter,file_name))
                                     success_flag = false;
-                            ic++;
+                            instructions_counter++;
                         }
                     }
                     break;

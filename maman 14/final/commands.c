@@ -53,19 +53,19 @@ bool assemble_machine_word_with_single_param(parameter param, bool is_source, in
     int word_location = inst_counter + START_ADDRESS;
     int new_num;
     symbol_data* symbol;
-    if (param.address == register_addr){
+    if (param.address == reg_addr){
         new_num = param.param_name[2] - '0'; /* get register number */
         /* shifting 7 if source since source is 11-7 and 2 for dest since dest is 6-2 */
         new_num = is_source ? new_num<<7 : new_num<<2;
         CODE_IMAGE[word_location] = new_num;
-    } else if (param.address == immediate) {
+    } else if (param.address == imm_addr) {
         new_num = convert_to_int(param.param_name);
             if (new_num == INT_MIN){
                 return false;
             }
         new_num<<=2; /* make room for 00 */
         CODE_IMAGE[word_location] = new_num;
-    } else if (param.address == direct) {
+    } else if (param.address == drct_addr) {
         /* TODO: need to handle in second pass */
         if((symbol = find_symbol(param.param_name)) == NULL){
             fprintf(stderr, "ERROR in %s:Unable to find label %s assemble_machine_word_with_single_param\n", file_name, param.param_name);
@@ -105,37 +105,37 @@ void find_parameters(parameter* first_param, parameter* second_param){
     first_param->address = adders_error;
     second_param->address = adders_error;
     if((token = strtok(NULL, delims)) == NULL){
-        first_param->address = no_addresing;
-        second_param->address = no_addresing;
+        first_param->address = no_addr;
+        second_param->address = no_addr;
         return;
     }
     strcpy(first_param->param_name, token);
     if (is_register(token)){
-        first_param->address = register_addr;
-    } else { /* could be label or immediate value */
+        first_param->address = reg_addr;
+    } else { /* could be label or imm_addr value */
         /* only labels start with char */
         if (isalpha(token[0])){
             if (isReservedWord(token)){
                 fprintf(stderr, "label reference %s cannot be a reserved word find_parameters\n",token);
                 return;
             }
-            first_param->address = direct;
-        } else { /* starts with number so only immediate */
+            first_param->address = drct_addr;
+        } else { /* starts with number so only imm_addr */
             new_num = convert_to_int(token);
             if (new_num == INT_MIN)
                 return;
-            first_param->address = immediate;
+            first_param->address = imm_addr;
         }
     }
     
     /* after first param should be a comma */
     if((token = strtok(NULL, delims)) == NULL || *token == ','){
-        second_param->address = no_addresing;
+        second_param->address = no_addr;
         has_comma = true;
     }
     /* same checks as first param but for second param */
     if((token = strtok(NULL, delims)) == NULL){
-        second_param->address = no_addresing;
+        second_param->address = no_addr;
         return;
     }
     if (!has_comma){
@@ -144,20 +144,20 @@ void find_parameters(parameter* first_param, parameter* second_param){
     }
     strcpy(second_param->param_name, token);
     if (is_register(token)){
-        second_param->address = register_addr;
-    } else { /* could be label or immediate value */
+        second_param->address = reg_addr;
+    } else { /* could be label or imm_addr value */
         /* only labels start with char */
         if (isalpha(token[0])){
             if (isReservedWord(token)){
                 fprintf(stderr, "Label reference %s cannot be a reserved word find_parameters\n",token);
                 return;
             }
-            second_param->address = direct;
-        } else { /* starts with number so only immediate */
+            second_param->address = drct_addr;
+        } else { /* starts with number so only imm_addr */
             new_num = convert_to_int(token);
             if (new_num == INT_MIN)
                 return;
-            second_param->address = direct;
+            second_param->address = drct_addr;
         }
     }
     /* check for extreneous text after second parameter */

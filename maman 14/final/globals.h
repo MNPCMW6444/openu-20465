@@ -48,27 +48,27 @@ typedef enum op_code_t {
 
 /* define are enum */
 typedef enum are_t {
-    encoding_error = -1,
+    unknown_addr = -1,
     absolute = 0,
     external = 1,
     realocatable = 2
 } encoding_type;
 
 /* define addressing type enum */
-typedef enum addressing_t {
+typedef enum address_t {
     adders_error = -1,
-    no_addresing = 0,
-    immediate = 1,
-    direct = 3,
-    register_addr = 5
-} addressing_type;
+    no_addr = 0,
+    imm_addr = 1,
+    drct_addr = 3,
+    reg_addr = 5
+} addr_type;
 
 /* machine word struct with all required parameters */
 typedef struct macine_word_t {
     encoding_type encoding;
-    addressing_type dest;
+    addr_type dest;
     op_code_type op_code;
-    addressing_type source;
+    addr_type source;
 } machine_word;
 
 /* command types, to initialize command array in order to retrive data */
@@ -80,7 +80,7 @@ typedef struct command_t {
 
 typedef struct parameter_t {
     char param_name[SYMBOL_MAX_NAME_SIZE + 1];
-    addressing_type address;
+    addr_type address;
 } parameter;
 
 #endif
