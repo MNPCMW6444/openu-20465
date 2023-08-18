@@ -18,5 +18,5 @@ mov @r1, @r0
 ; (balh blah blah)
 prn @r1            
 jmp END            
-.entry MAIN
-END:  stop               ; Terminate the program
+.entry MAIN       
+END:  stop
