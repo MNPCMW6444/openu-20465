@@ -79,7 +79,7 @@ bool lineToIgnore(char* line)
     return true;
 }
 
-/* the assembler allows 80 char lines */
+/* max chars allowed per line is 80 */
 bool lengthTest(char* line)
 {
     if(strlen(line) > MAX_LINE_LEN)
@@ -195,8 +195,8 @@ int convert_to_int(char* word){
         fprintf(stderr, "Unable to convert %s,got %d after convertion\n", word, num);
         return INT_MIN;
     }
-    if (num > MAX_NUMBER|| num < MIN_NUMBER){ /* out of numbers range */
-        fprintf(stderr, "Number %d,out of numbers range,max is %d and min is %d\n",num,MAX_NUMBER,MIN_NUMBER);
+    if (num > MAX_NUM|| num < MIN_NUM){ /* out of numbers range */
+        fprintf(stderr, "Number %d,out of numbers range,max is %d and min is %d\n",num,MAX_NUM,MIN_NUM);
         return INT_MIN;
     }
     return num;

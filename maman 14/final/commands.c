@@ -7,7 +7,7 @@
 /* commands is a data structre to store and manage the code image */
 
 int INSTRUCTIONS_COUNTER = 0;
-int CODE_IMAGE[MAX_DATA_SIZE] ={IMAGE};
+int CODE_IMAGE[MEM_SIZE] ={IMAGE};
 
 cmd command_table[NUMBER_OF_COMMANDS] = {
     {"mov", mov, 2},
@@ -66,7 +66,7 @@ bool assemble_machine_word_with_single_param(parameter param, bool is_source, in
         CODE_IMAGE[word_location] = new_num;
     } else if (param.address == drct_addr) {
         if((symbol = find_symbol(param.param_name)) == NULL){
-            fprintf(stderr, "ERROR in %s:Unable to find label %s assemble_machine_word_with_single_param\n", file_name, param.param_name);
+            fprintf(stderr, "ERROR in %s:Unable to find label %s\n", file_name, param.param_name);
             return false;
         }
         new_num = symbol->symbol.value;

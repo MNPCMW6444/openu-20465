@@ -3,7 +3,7 @@
 
 #include "globals.h"
 
-int DATA_IMG[MAX_DATA_SIZE];
+int DATA_IMG[MEM_SIZE];
 
 /* adds number to data_img and return true/false according to sucess */
 bool add_data_num(char*,int);

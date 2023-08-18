@@ -6,7 +6,7 @@
 #define NUMBER_OF_COMMANDS 16
 #define START_ADDRESS 100
 
-int CODE_IMAGE[MAX_DATA_SIZE];
+int CODE_IMAGE[MEM_SIZE];
 
 cmd* find_command(char*);
 

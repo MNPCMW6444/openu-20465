@@ -17,7 +17,7 @@ int main(int totalArgs, char* args[]) {
 
     if (totalArgs < 2) {
         printf("Usage: %s <filename> <filename> ...\n", args[0]);
-        return 1; /* An error code is returned if the arguments are insufficient */
+        return 1; /* Error code is returned if the arguments are bad */
     }
 
     /* Each filename given is processed in this loop */
@@ -37,7 +37,7 @@ int main(int totalArgs, char* args[]) {
         /* The first pass is performed on the file, and failure is checked */
         pass1_status = do_first_pass(file);
         if (!pass1_status) {
-            printf("ERROR: First pass of %s failed.\n", file);
+            printf("ERROR: First pass for %s has failed.\n", file);
             release_list();
             clean_outputs(file);
             continue;
@@ -46,7 +46,7 @@ int main(int totalArgs, char* args[]) {
         /* The second pass is performed on the file, and failure is checked */
         pass2_status = secondPass(file);
         if (!pass2_status) {
-            printf("ERROR: Second pass of %s failed.\n", file);
+            printf("ERROR: Second pass for %s has failed.\n", file);
             release_list();
             clean_outputs(file);
             continue;

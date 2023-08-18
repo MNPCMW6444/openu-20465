@@ -2,31 +2,25 @@
 #define GLOBALS_H
 
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
 #include <limits.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
-/* since a since word is 12 bits this is the max size (2^12-1) to (2^12-1)-1 */
-#define MAX_NUMBER 2047
-#define MIN_NUMBER -2048
+/* accroding to word size -  (2^12-1) to (2^12-1)-1 */
+#define MAX_NUM 2047
+#define MIN_NUM -2048
 
+#define MAX_LINE_LEN 80
 #define SYMBOL_MAX_NAME_SIZE 31
 #define MACRO_MAX_NAME_SIZE 31
-#define MAX_LINE_LEN 80
-#define MAX_DATA_SIZE 1024
+#define MEM_SIZE 1024
 
-#define IMAGE 0 /*code and data image place holder*/
 #define INITIAL_ADDRESS 100
-
-/* define bool type */
-typedef enum bool_t {
-    false = 0,
-    true
-} bool;
+#define IMAGE 0 /*code and data image place holder*/
 
 /* define op_code enum */
-typedef enum op_code_t {
+typedef enum op_code {
     op_code_error = -1,
     mov = 0,
     cmp,
@@ -46,8 +40,13 @@ typedef enum op_code_t {
     stop
 } op_code_type;
 
-/* define are enum */
-typedef enum are_t {
+/* define bool type */
+typedef enum bool_t {
+    false = 0,
+    true
+} bool;
+
+typedef enum a_r_e {
     unknown_addr = -1,
     absolute = 0,
     external = 1,
@@ -64,14 +63,13 @@ typedef enum address_t {
 } addr_type;
 
 /* machine word struct with all required parameters */
-typedef struct macine_word_t {
+typedef struct macine_word {
     encoding_type encoding;
     addr_type dest;
     op_code_type op_code;
     addr_type source;
 } machine_word;
 
-/* command types, to initialize command array in order to retrive data */
 typedef struct command_t {
     char command_name[5];
     op_code_type op_code;
