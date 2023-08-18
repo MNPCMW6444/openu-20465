@@ -56,11 +56,11 @@ typedef enum are_t {
 
 /* define addressing type enum */
 typedef enum addressing_t {
-    adders_error = -1,
-    no_addresing = 0,
-    immediate = 1,
-    direct = 3,
-    register_addr = 5
+    addr_error = -1,
+    no_addressing = 0,
+    immediate_addressing = 1,
+    direct_addressing = 3,
+    register_addressing = 5
 } addressing_type;
 
 /* machine word struct with all required parameters */

@@ -4,13 +4,13 @@
 #include "globals.h"
 #include "prints.h"
 
-/*TODO out of array boundries check (over 1024)*/
-/* commands is a data structre to store and manage the code image */
+/* Task: Add boundary checks for arrays (exceeding 1024) */
+/* This data structure 'commands' is used to store and manage the code image */
 
-int INS_COUNTER = 0;
-int CODE_IMG[MAX_DATA_SIZE] ={IMAGE_PH};
+int InstructionCounter = 0;
+int CodeImage[MAX_DATA_SIZE] = {IMAGE_PH};
 
-cmd cmd_table[CMD_SUM] = {
+cmd CommandTable[CMD_SUM] = {
     {"mov", mov, 2},
     {"cmp", cmp, 2},
     {"add", add, 2},
@@ -29,149 +29,149 @@ cmd cmd_table[CMD_SUM] = {
     {"stop", stop, 0}
 };
 
-cmd* find_cmd(char* cmd_name){
-    int i;
-    for (i=0; i<CMD_SUM; i++){
-        if (strcmp((cmd_table[i].command_name), cmd_name) == 0)
-            return &cmd_table[i]; /* if here then found the cmd */
+cmd* find_command(char* command_name){
+    int index;
+    for (index = 0; index < CMD_SUM; index++) {
+        if (strcmp((CommandTable[index].command_name), command_name) == 0)
+            return &CommandTable[index]; /* Command found at this point */
     }
-    return NULL; /* return null if not found anything */
+    return NULL; /* Return NULL if no matching command is found */
 }
 
-/* adding a machine word as decimal representation of the binary word */
-void add_machine_word(machine_word current_word, int IC){
-    int word_location = IC + START_ADDRESS;
-    int built_word = current_word.source; /* slot 11-9 */
-    built_word = (built_word<< 4) + current_word.op_code;  /* slot 8-5 */
-    built_word = (built_word << 3) + current_word.dest; /* slot 4-2 */
-    built_word = (built_word << 2); /* slot 1-0 since encoding is always 00  */
-    CODE_IMG[word_location] = built_word ;
+/* Function to add a machine word as a decimal representation of a binary word */
+void add_machine_word(machine_word current_word, int InstructionCount) {
+    int word_location = InstructionCount + START_ADDRESS;
+    int assembled_word = current_word.source; /* Slots 11-9 */
+    assembled_word = (assembled_word << 4) + current_word.op_code;  /* Slots 8-5 */
+    assembled_word = (assembled_word << 3) + current_word.dest; /* Slots 4-2 */
+    assembled_word = (assembled_word << 2); /* Slots 1-0 as encoding is always 00 */
+    CodeImage[word_location] = assembled_word;
 }
 
-/* since register adressing can be both source or dest need bool flag to know which bits to flag */
-bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* fileName){
-    int word_location = IC + START_ADDRESS;
-    int new_num;
-    symbol_data* symbol;
-    if (param.address == register_addr){
-        new_num = param.param_name[2] - '0'; /* get register number */
-        /* shifting 7 if source since source is 11-7 and 2 for dest since dest is 6-2 */
-        new_num = is_source ? new_num<<7 : new_num<<2;
-        CODE_IMG[word_location] = new_num;
-    } else if (param.address == immediate) {
-        new_num = convert_to_int(param.param_name);
-            if (new_num == INT_MIN){
-                return false;
-            }
-        new_num<<=2; /* make room for 00 */
-        CODE_IMG[word_location] = new_num;
-    } else if (param.address == direct) {
-        /* TODO: need to handle in second pass */
-        if((symbol = find_symbol(param.param_name)) == NULL){
-            fprintf(stderr, "ERROR in %s:Unable to find label %s add_extra_word_single_param\n", fileName, param.param_name);
+/* Handling single parameter case for register addressing; requires bool flag to determine which bits to flag */
+bool add_extra_word_single_param(parameter param, bool is_source, int InstructionCount, char* file_name) {
+    int word_location = InstructionCount + START_ADDRESS;
+    int new_number;
+    symbol_data* symbol_info;
+    if (param.address == register_addressing) {
+        new_number = param.param_name[2] - '0'; /* Extract register number */
+        new_number = is_source ? new_number << 7 : new_number << 2;
+        CodeImage[word_location] = new_number;
+    } else if (param.address == immediate_addressing) {
+        new_number = convert_to_int(param.param_name);
+        if (new_number == INT_MIN) {
             return false;
         }
-        new_num = symbol->symbol.value;
-        if (symbol->symbol.attribute == SYMBOL_EXTERN){
-            new_num= (new_num <<2) + external; /* if external then add const for 01 bits in 1-0 location */
-            write_external_file(symbol->symbol.name, word_location, fileName);
-        } else {
-            /* if not external then label needs reloaction so add the const for 10 bits in 1-0 location */
-            new_num= (new_num <<2) + realocatable;
+        new_number <<= 2; /* Accommodate for 00 */
+        CodeImage[word_location] = new_number;
+    } else if (param.address == direct_addressing) {
+        /* Handling in second pass needs to be done */
+        if ((symbol_info = find_symbol(param.param_name)) == NULL) {
+            fprintf(stderr, "ERROR in %s: Unable to locate label %s in add_extra_word_single_param\n", file_name, param.param_name);
+            return false;
         }
-        CODE_IMG[word_location] = new_num;
+        new_number = symbol_info->symbol.value;
+        if (symbol_info->symbol.attribute == SYMBOL_EXTERN) {
+            new_number = (new_number << 2) + external; /* For external labels, add constant for bits 1-0 location */
+            write_external_file(symbol_info->symbol.name, word_location, file_name);
+        } else {
+            /* For non-external labels, mark label for relocation; add constant for bits 1-0 location */
+            new_number = (new_number << 2) + realocatable;
+        }
+        CodeImage[word_location] = new_number;
     }
     return true;
 }
 
-/* for when both the operans are registers and share the word */
-void add_extra_word_double_param(char* source, char* dest, int IC){
-    int word_location = IC + START_ADDRESS;
-    /* since checked before that register name are legal, get the register number */
-    int new_num = source[2] - '0'; /* setting the first 5 digits 11-7 */
-    int reg_2 = dest[2] - '0';
-    new_num = (new_num<<5) + reg_2; /* shifting 5 for the next 5 digits 6-1 */
-    new_num <<= 2; /* last shift of 2 to set all in place, always 00 in digits 1-0 */
-    CODE_IMG[word_location] = new_num;
+/* Handling the case when both operands are registers and share the word */
+void add_extra_word_double_param(char* source, char* destination, int InstructionCount) {
+    int word_location = InstructionCount + START_ADDRESS;
+    int new_number = source[2] - '0'; /* Set first 5 digits 11-7 */
+    int reg_second = destination[2] - '0';
+    new_number = (new_number << 5) + reg_second; /* Shift 5 for next 5 digits 6-1 */
+    new_number <<= 2; /* Last shift of 2 to set in place, always 00 in digits 1-0 */
+    CodeImage[word_location] = new_number;
 }
 
-void find_parameters(parameter* first_param, parameter* second_param){
-    char* token;
-    int new_num;
-    bool has_comma = false;
-    /* meaning no text after cmd so no parameters for addressing */
-    memset(first_param->param_name, 0, strlen(first_param->param_name));
-    memset(second_param->param_name, 0, strlen(second_param->param_name));
-    first_param->address = adders_error;
-    second_param->address = adders_error;
-    if((token = strtok(NULL, delims)) == NULL){
-        first_param->address = no_addresing;
-        second_param->address = no_addresing;
+void extract_params(parameter* param1, parameter* param2) {
+    char* parsed_token;
+    int converted_number;
+    bool comma_present = false;
+
+    /* Clear previous parameter names, indicating there are no addressing parameters following the command */
+    memset(param1->param_name, 0, strlen(param1->param_name));
+    memset(param2->param_name, 0, strlen(param2->param_name));
+    param1->address = addr_error;
+    param2->address = addr_error;
+
+    if ((parsed_token = strtok(NULL, delims)) == NULL) {
+        param1->address = no_addressing;
+        param2->address = no_addressing;
         return;
     }
-    strcpy(first_param->param_name, token);
-    if (is_register(token)){
-        first_param->address = register_addr;
-    } else { /* could be label or immediate value */
-        /* only labels start with char */
-        if (isalpha(token[0])){
-            if (isReservedWord(token)){
-                fprintf(stderr, "label reference %s cannot be a reserved word find_parameters\n",token);
+    strcpy(param1->param_name, parsed_token);
+    if (is_register(parsed_token)) {
+        param1->address = register_addressing;
+    } else { /* It could be a label or an immediate value */
+        /* Labels must start with a character */
+        if (isalpha(parsed_token[0])) {
+            if (isReservedWord(parsed_token)) {
+                fprintf(stderr, "Label reference %s must not be a reserved word in extract_params\n", parsed_token);
                 return;
             }
-            first_param->address = direct;
-        } else { /* starts with number so only immediate */
-            new_num = convert_to_int(token);
-            if (new_num == INT_MIN)
+            param1->address = direct_addressing;
+        } else { /* It starts with a number, so it's an immediate value */
+            converted_number = convert_to_int(parsed_token);
+            if (converted_number == INT_MIN) {
                 return;
-            first_param->address = immediate;
+            }
+            param1->address = immediate_addressing;
         }
     }
     
-    /* after first param should be a comma */
-    if((token = strtok(NULL, delims)) == NULL || *token == ','){
-        second_param->address = no_addresing;
-        has_comma = true;
+    /* A comma must follow the first parameter */
+    if ((parsed_token = strtok(NULL, delims)) == NULL || *parsed_token == ',') {
+        param2->address = no_addressing;
+        comma_present = true;
     }
-    /* same checks as first param but for second param */
-    if((token = strtok(NULL, delims)) == NULL){
-        second_param->address = no_addresing;
+    /* Conduct the same validation as the first parameter but for the second parameter */
+    if ((parsed_token = strtok(NULL, delims)) == NULL) {
+        param2->address = no_addressing;
         return;
     }
-    if (!has_comma){
-        fprintf(stderr, "Missing comma after first parameter %s find_parameters has comma\n",first_param->param_name);
+    if (!comma_present) {
+        fprintf(stderr, "A comma is missing after the first parameter %s; extract_params requires a comma\n", param1->param_name);
         return;
     }
-    strcpy(second_param->param_name, token);
-    if (is_register(token)){
-        second_param->address = register_addr;
-    } else { /* could be label or immediate value */
-        /* only labels start with char */
-        if (isalpha(token[0])){
-            if (isReservedWord(token)){
-                fprintf(stderr, "Label reference %s cannot be a reserved word find_parameters\n",token);
+    strcpy(param2->param_name, parsed_token);
+    if (is_register(parsed_token)) {
+        param2->address = register_addressing;
+    } else { /* It could be a label or an immediate value */
+        /* Labels must start with a character */
+        if (isalpha(parsed_token[0])) {
+            if (isReservedWord(parsed_token)) {
+                fprintf(stderr, "Label reference %s must not be a reserved word in extract_params\n", parsed_token);
                 return;
             }
-            second_param->address = direct;
-        } else { /* starts with number so only immediate */
-            new_num = convert_to_int(token);
-            if (new_num == INT_MIN)
+            param2->address = direct_addressing;
+        } else { /* It starts with a number, so it's an immediate value */
+            converted_number = convert_to_int(parsed_token);
+            if (converted_number == INT_MIN)
                 return;
-            second_param->address = direct;
+            param2->address = immediate_addressing;
         }
     }
-    /* check for extreneous text after second parameter */
-    if((token = strtok(NULL, delims)) != NULL){
-        fprintf(stderr,"Extreneous text after second parameter %s\n",second_param->param_name);
+    /* Check if there's any extra text after the second parameter */
+    if ((parsed_token = strtok(NULL, delims)) != NULL) {
+        fprintf(stderr, "Additional text found after the second parameter %s\n", param2->param_name);
     }
 }
 
-int getIC()
-{
-    return INS_COUNTER;
+
+int getInstructionCounter() {
+    return InstructionCounter;
 }
 
-void addIC(int counter)
-{
-    INS_COUNTER = counter;
+void addInstructionCounter(int counter) {
+    InstructionCounter = counter;
 }
