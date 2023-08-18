@@ -8,7 +8,7 @@
 
 int CODE_IMG[MAX_DATA_SIZE];
 
-cmd* find_command(char*);
+cmd* find_cmd(char*);
 
 void add_machine_word(machine_word current_word, int IC);
 
@@ -16,10 +16,10 @@ bool add_extra_word_single_param(parameter param, bool is_source, int IC, char* 
 
 void add_extra_word_double_param(char* source, char* dest, int IC);
 
-void extract_params(parameter* first_param, parameter* second_param);
+void find_parameters(parameter* first_param, parameter* second_param);
 
-int getInstructionCounter();
+int getIC();
 
-void addInstructionCounter(int counter);
+void addIC(int counter);
 
 #endif

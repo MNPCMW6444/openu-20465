@@ -138,40 +138,40 @@ bool first_pass(char* file_name){
 
             switch (current_cmd.num_of_operands){
             case 0:
-                if (first_param.address != no_addressing){
+                if (first_param.address != no_addresing){
                     fprintf(stderr, "Line %d cmd %s shouldnt receive parameters",current_line,current_cmd.command_name);
                     sucess_flag = false;
                 }
                 break;
             
             case 1:
-                if (first_param.address == no_addressing || second_param != no_addressing){
+                if (first_param.address == no_addresing || second_param != no_addresing){
                     fprintf(stderr, "Line %d cmd %s should receive 1 parameter",current_line,current_cmd.command_name);
                     sucess_flag = false;
                 }
                 /* direct addressing will be handled in second pass since not enough data currently */
-                if (first_param.address == register_addressing || first_param.address == immediate)
+                if (first_param.address == register_addr || first_param.address == immediate)
                     if (!add_extra_word_single_param(first_param,false,ic))
                         sucess_flag = false;
                 ic++
                 break;
             
             case 2:
-                if (first_param.address == no_addressing || second_param == no_addressing){
+                if (first_param.address == no_addresing || second_param == no_addresing){
                     fprintf(stderr, "Line %d cmd %s should receive 2 parameter",current_line,current_cmd.command_name);
                     sucess_flag = false;
                 }
                 /* when both addressing types are register they share a single word */
-                if (first_param.address == register_addressing && second_param.address == register_addressing){
+                if (first_param.address == register_addr && second_param.address == register_addr){
                     add_extra_word_double_param(first_param.param_name, second_param.param_name, ic);
                     ic++;
                 } else { /* meaning 1 of the addressing type is not register addressing */
-                    if (first_param.address != addr_error && second_param.address != addr_error){
-                        if (first_param.address == register_addressing || first_param.address == immediate)
+                    if (first_param.address != adders_error && second_param.address != adders_error){
+                        if (first_param.address == register_addr || first_param.address == immediate)
                             if (!add_extra_word_single_param(first_param,true,ic))
                                 sucess_flag = false;
                         ic++;
-                        if (second_param.address == register_addressing || second_param.address == immediate)
+                        if (second_param.address == register_addr || second_param.address == immediate)
                             if (!add_extra_word_single_param(second_param,false,ic))
                                 sucess_flag = false;
                         ic++;

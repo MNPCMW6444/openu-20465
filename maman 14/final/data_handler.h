@@ -6,13 +6,13 @@
 int DATA_IMG[MAX_DATA_SIZE];
 
 /* adds number to data_img and return true/false according to sucess */
-bool insert_number(char*,int);
+bool add_data_num(char*,int);
 
 /* adds string and also null terminator to data_img and return the number of incerement for dc,0 in case of invalid format and -1 in case of out of bounds */
-int insert_string(char*,int);
+int add_data_string(char*,int);
 
-int retrieveDC();
+int getDC();
 
-void updateDC(int counter);
+void addDC(int counter);
 
 #endif

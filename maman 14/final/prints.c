@@ -57,8 +57,8 @@ char* convertToBase64(uint16_t binaryData)
 void printOBJ(char* file_name)
 {
     int i;
-    int IC = getInstructionCounter();
-    int DC = retrieveDC();
+    int IC = getIC();
+    int DC = getDC();
     char* b64;
     char* object_file_name = str_allocate_cat(file_name, object_extension);
     FILE* file = fopen (object_file_name, "w");
