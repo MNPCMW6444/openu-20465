@@ -23,7 +23,7 @@ LOOP:
         ; Store the sum into SUM
         mov @r1, @r0
 
-        ; (Assuming there's a function called PrintVal that can print an integer value)
+        ; (balh blah blah)
         prn @r1            
         jmp END            
 
